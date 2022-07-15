@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/postFeedFragment">
+
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="ru.netology.diplom.ui.auth.AuthenticationFragment"
+        android:label="@string/authentication"
+        tools:layout="@layout/fragment_authentication" >
+        <action
+            android:id="@+id/action_authenticationFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="ru.netology.diplom.ui.auth.RegistrationFragment"
+        android:label="@string/registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_postFeedFragment"
+            app:destination="@id/postFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFeedFragment"
+        android:name="ru.netology.diplom.ui.post.PostFeedFragment"
+        android:label="@string/posts"
+        tools:layout="@layout/fragment_post_feed" >
+        <action
+            android:id="@+id/action_postFeedFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_postNewOrEditFragment"
+            app:destination="@id/postNewOrEditFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_showImageFragment"
+            app:destination="@id/showImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/jobNewOrEditFragment"
+        android:name="ru.netology.diplom.ui.job.JobNewOrEditFragment"
+        android:label="@string/title_new_job"
+        tools:layout="@layout/fragment_job_new_or_edit" >
+        <argument
+            android:name="jobArgs"
+            app:argType="ru.netology.diplom.data.dto.entity.Job"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/jobFeedFragment"
+        android:name="ru.netology.diplom.ui.job.JobFeedFragment"
+        android:label="@string/jobs"
+        tools:layout="@layout/fragment_job_feed" >
+        <action
+            android:id="@+id/action_jobFeedFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+        <action
+            android:id="@+id/action_jobFeedFragment_to_jobNewOrEditFragment"
+            app:destination="@id/jobNewOrEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postNewOrEditFragment"
+        android:name="ru.netology.diplom.ui.post.PostNewOrEditFragment"
+        android:label="@string/title_new_post"
+        tools:layout="@layout/fragment_post_new_or_edit" >
+        <argument
+            android:name="postArgs"
+            app:argType="ru.netology.diplom.data.dto.entity.Post"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFeedFragment"
+        android:name="ru.netology.diplom.ui.event.EventFeedFragment"
+        android:label="@string/events"
+        tools:layout="@layout/fragment_event_feed" >
+        <action
+            android:id="@+id/action_eventFeedFragment_to_eventNewOrEditFragment"
+            app:destination="@id/eventNewOrEditFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_showImageFragment"
+            app:destination="@id/showImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventNewOrEditFragment"
+        android:name="ru.netology.diplom.ui.event.EventNewOrEditFragment"
+        android:label="@string/title_new_entity"
+        tools:layout="@layout/fragment_event_new_or_edit" >
+        <argument
+            android:name="eventArgs"
+            app:argType="ru.netology.diplom.data.dto.entity.Event"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/showImageFragment"
+        android:name="ru.netology.diplom.ui.attachment.ShowImageFragment"
+        android:label="@string/image"
+        tools:layout="@layout/fragment_show_image" >
+        <argument
+            android:name="showImage"
+            app:argType="ru.netology.diplom.data.dto.Attachment"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>

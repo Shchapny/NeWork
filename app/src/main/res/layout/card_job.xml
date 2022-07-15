@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/offset_entity"
+    app:cardCornerRadius="@dimen/card_radius">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/offset_entity">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/company_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_entity"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/company"
+                android:textColor="@color/black"
+                tools:text="@sample/entity.json/data/company" />
+
+            <TextView
+                android:id="@+id/position_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_entity"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                tools:text="@sample/entity.json/data/position" />
+
+            <TextView
+                android:id="@+id/work_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_entity"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/work_experience"
+                android:textColor="@color/black"
+                tools:text="@sample/entity.json/data/workExperience" />
+
+            <TextView
+                android:id="@+id/link_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_entity"
+                android:autoLink="web"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorLink="@color/purple_500"
+                tools:text="@sample/entity.json/data/link" />
+        </LinearLayout>
+
+        <ImageButton
+            android:padding="0dp"
+            android:id="@+id/menu"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_more"
+            android:layout_marginTop="@dimen/offset_entity"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

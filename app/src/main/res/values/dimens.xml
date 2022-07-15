@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="offset">16dp</dimen>
+    <dimen name="offset_entity">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="offset_photo">8dp</dimen>
+    <dimen name="height_image_post">240dp</dimen>
+    <dimen name="avatar_radius">50dp</dimen>
+    <dimen name="avatar_size">100dp</dimen>
+    <dimen name="min_size_button">4dp</dimen>
+    <dimen name="card_radius">10dp</dimen>
+    <dimen name="height_more">24dp</dimen>
+    <dimen name="width_share">48dp</dimen>
+    <dimen name="height_share">48dp</dimen>
+</resources>

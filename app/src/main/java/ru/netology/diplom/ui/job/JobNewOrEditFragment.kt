@@ -1,0 +1,140 @@
+package ru.netology.diplom.ui.job
+
+import android.os.Bundle
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import ru.netology.diplom.R
+import ru.netology.diplom.databinding.FragmentJobNewOrEditBinding
+import ru.netology.diplom.util.convertLongToString
+import ru.netology.diplom.util.convertStringToLong
+import ru.netology.diplom.util.hideKeyboard
+import ru.netology.diplom.util.selectDateDialog
+import ru.netology.diplom.viewmodel.JobViewModel
+
+@AndroidEntryPoint
+class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
+
+    private var _binding: FragmentJobNewOrEditBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel by viewModels<JobViewModel>()
+    private val navArgs by navArgs<JobNewOrEditFragmentArgs>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)?.also {
+            _binding = FragmentJobNewOrEditBinding.bind(it)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_save, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.save -> {
+                        resetErrorInfo()
+                        _binding?.let { binding ->
+                            val company = binding.company.text.toString()
+                            val position = binding.position.text.toString()
+                            val startDate = binding.startDate.text.toString()
+                            val finishDate = if (binding.finishDate.text.isNullOrBlank()) {
+                                null
+                            } else {
+                                binding.finishDate.text.toString().convertStringToLong()
+                            }
+                            val link = if (binding.link.text.isNullOrBlank()) {
+                                null
+                            } else {
+                                binding.link.text.toString()
+                            }
+                            when {
+                                startDate.isBlank() -> binding.startDateLayout.error =
+                                    getString(R.string.error_startdate)
+                                company.isBlank() -> binding.companyLayout.error =
+                                    getString(R.string.error_company)
+                                position.isBlank() -> binding.positionLayout.error =
+                                    getString(R.string.error_position)
+                                else -> {
+                                    viewModel.change(
+                                        company,
+                                        position,
+                                        startDate.convertStringToLong() ?: 0L,
+                                        finishDate,
+                                        link
+                                    )
+                                    viewModel.save()
+                                    hideKeyboard(requireView())
+                                    findNavController().navigateUp()
+                                }
+                            }
+                        }
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+
+        navArgs.jobArgs?.let { job ->
+            binding.apply {
+                company.setText(job.name)
+                position.setText(job.position)
+                startDate.setText(job.start.convertLongToString())
+                if (job.finish == 0L) {
+                    finishDate.setText("")
+                } else {
+                    finishDate.setText(job.finish?.convertLongToString())
+                }
+                link.setText(job.link)
+            }
+        }
+
+        binding.apply {
+            startDate.setOnClickListener {
+                selectDateDialog(startDateLayout.editText, requireParentFragment())
+            }
+            finishDate.setOnClickListener {
+                selectDateDialog(finishDateLayout.editText,  requireParentFragment())
+            }
+        }
+
+        viewModel.jobCreated.observe(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_unknown, Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun resetErrorInfo() {
+        binding.apply {
+            startDateLayout.error = null
+            companyLayout.error = null
+            positionLayout.error = null
+        }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+}
