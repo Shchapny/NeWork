@@ -26,12 +26,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesCleartextTraffic = true
-            buildConfigField "String", "BASE_URL", '"http://192.168.0.96:9999"'
+            buildConfigField "String", "BASE_URL", '"https://netomedia.ru"'
             //"https://netomedia.ru/swagger/"
         }
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
-            buildConfigField "String", "BASE_URL", '"http://192.168.0.96:9999"'
+            buildConfigField "String", "BASE_URL", '"https://netomedia.ru"'
             //"http://192.168.0.96:9999"
             //10.0.2.2
         }

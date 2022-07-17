@@ -37,6 +37,7 @@ interface AuthApiService {
         @Part file: MultipartBody.Part?
     ): Response<AuthState>
 
+    //в swagger нет такой реализации
     @POST("users/push-tokens")
     suspend fun saveToken(@Body pushToken: PushToken): Response<Unit>
 }
