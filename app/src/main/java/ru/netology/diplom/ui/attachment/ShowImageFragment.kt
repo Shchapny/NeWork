@@ -1,13 +1,16 @@
 package ru.netology.diplom.ui.attachment
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IntegerRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.diplom.BuildConfig
 import ru.netology.diplom.R
 import ru.netology.diplom.databinding.FragmentShowImageBinding
 import ru.netology.diplom.util.loadImage
@@ -23,6 +26,7 @@ class ShowImageFragment : Fragment(R.layout.fragment_show_image) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setColorAppBar(R.color.black)
         return super.onCreateView(inflater, container, savedInstanceState)?.also {
             _binding = FragmentShowImageBinding.bind(it)
         }
@@ -32,12 +36,18 @@ class ShowImageFragment : Fragment(R.layout.fragment_show_image) {
         super.onViewCreated(view, savedInstanceState)
 
         navArgs.showImage?.let { attachment ->
-            binding.image.loadImage(BuildConfig.BASE_URL, "media", attachment.url)
+            binding.image.loadImage(attachment.url, "media")
         }
     }
 
     override fun onDestroyView() {
+        setColorAppBar(R.color.purple_500)
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun setColorAppBar(@IntegerRes colorResource: Int) {
+        val colorAppBar = ContextCompat.getColor(requireActivity(), colorResource)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(colorAppBar))
     }
 }

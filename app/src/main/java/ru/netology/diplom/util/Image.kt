@@ -25,17 +25,16 @@ fun loadFromCamera(fragment: Fragment, maxSize: Int, intent: (Intent) -> Unit) {
         .createIntent(intent)
 }
 
-fun <T>ImageView.loadImage(url: String, argument: String, entity: T) {
+fun ImageView.loadImage(url: String, argument: String) {
     when (argument) {
         "avatars" -> Glide.with(this)
-            .load("$url/avatars/$entity")
+            .load(url)
             .placeholder(R.drawable.ic_avatar)
-            .error(R.drawable.ic_error)
             .circleCrop()
             .timeout(10_000)
             .into(this)
         "media" -> Glide.with(this)
-            .load("$url/media/$entity")
+            .load(url)
             .timeout(10_000)
             .into(this)
     }

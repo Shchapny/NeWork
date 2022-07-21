@@ -9,13 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.netology.diplom.BuildConfig
 import ru.netology.diplom.authorization.AppAuth
 
-private const val BASE_URL = "${BuildConfig.BASE_URL}/swagger/paths/api/"
-//private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
+//private const val BASE_URL = "${BuildConfig.BASE_URL}/swagger/paths/api/"
+private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
 
 fun loggingInterceptor() = HttpLoggingInterceptor()
     .apply {
         if (BuildConfig.DEBUG) {
-            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BODY
         }
     }
 

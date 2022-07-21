@@ -17,14 +17,14 @@ interface AuthApiService {
     @POST("users/authentication")
     suspend fun authentication(
         @Field("login") login: String,
-        @Field("pass") password: String
+        @Field("password") password: String
     ): Response<AuthState>
 
     @FormUrlEncoded
     @POST("users/registration")
     suspend fun registerUser(
         @Field("login") login: String,
-        @Field("pass") password: String,
+        @Field("password") password: String,
         @Field("name") name: String
     ): Response<AuthState>
 
@@ -32,9 +32,9 @@ interface AuthApiService {
     @POST("users/registration")
     suspend fun registerWithPhoto(
         @Part("login") login: RequestBody,
-        @Part("pass") password: RequestBody,
+        @Part("password") password: RequestBody,
         @Part("name") name: RequestBody,
-        @Part file: MultipartBody.Part?
+        @Part file: MultipartBody.Part
     ): Response<AuthState>
 
     //в swagger нет такой реализации

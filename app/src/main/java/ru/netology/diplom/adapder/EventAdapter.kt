@@ -7,12 +7,12 @@ import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.diplom.BuildConfig
 import ru.netology.diplom.R
 import ru.netology.diplom.data.dto.entity.Event
 import ru.netology.diplom.databinding.CardEventBinding
 import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.util.count
+import ru.netology.diplom.util.dateFormatEntity
 import ru.netology.diplom.util.loadImage
 
 interface EventActionListener {
@@ -46,10 +46,10 @@ class EventViewHolder(
 
     fun bind(event: Event) {
         binding.apply {
-            avatar.loadImage(BuildConfig.BASE_URL, "avatars", event.authorAvatar)
+            avatar.loadImage(event.authorAvatar.toString(), "avatars")
             author.text = event.author
             content.text = event.content
-            published.text = event.published
+            published.text = event.published.dateFormatEntity()
             eventDate.text = event.datetime
             eventType.text = event.type.format
 
@@ -95,7 +95,7 @@ class EventViewHolder(
 
             if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) {
                 imageEvent.visibility = View.VISIBLE
-                imageEvent.loadImage(BuildConfig.BASE_URL, "media", event.attachment.url)
+                imageEvent.loadImage(event.attachment.url, "media")
             } else {
                 imageEvent.visibility = View.GONE
             }

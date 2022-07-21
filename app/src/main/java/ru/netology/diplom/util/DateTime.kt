@@ -21,6 +21,12 @@ fun String.convertStringToLong(): Long? {
     return date?.time
 }
 
+fun String.dateFormatEntity(): String {
+    val oldFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)
+    val newFormat = SimpleDateFormat("dd MMM yyyy г.", Locale.getDefault())
+    return newFormat.format(oldFormat as Date)
+}
+
 fun selectDateDialog(editText: EditText?, fragment: Fragment) {
     val calendar = Calendar.getInstance()
 

@@ -7,12 +7,12 @@ import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.diplom.BuildConfig
 import ru.netology.diplom.R
 import ru.netology.diplom.data.dto.entity.Post
 import ru.netology.diplom.databinding.CardPostBinding
 import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.util.count
+import ru.netology.diplom.util.dateFormatEntity
 import ru.netology.diplom.util.loadImage
 
 interface PostActionListener {
@@ -45,10 +45,10 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         binding.apply {
-            avatar.loadImage(BuildConfig.BASE_URL, "avatars", post.authorAvatar)
+            avatar.loadImage(post.authorAvatar.toString(), "avatars")
             author.text = post.author
             content.text = post.content
-            published.text = post.published
+            published.text = post.published.dateFormatEntity()
 
             likes.text = count(post.likeOwnerIds.size.toLong())
             likes.isChecked = post.likedByMe
@@ -80,7 +80,7 @@ class PostViewHolder(
 
             if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) {
                 imagePost.visibility = View.VISIBLE
-                imagePost.loadImage(BuildConfig.BASE_URL, "media", post.attachment.url)
+                imagePost.loadImage(post.attachment.url, "media")
             } else {
                 imagePost.visibility = View.GONE
             }
