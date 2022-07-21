@@ -10,6 +10,8 @@ import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+//функцию для события не забыть
+
 fun Long.convertLongToString(): String {
     val date = this
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
