@@ -54,7 +54,8 @@ class AuthRepositoryImpl @Inject constructor(
             val authentication =
                 response.body() ?: throw ApiError(response.code(), response.message())
 
-            authentication.token?.let { appAuth.setAuth(authentication.id, it) }
+//            authentication.token?.let { appAuth.setAuth(authentication.id, it) }
+            appAuth.setAuth(authentication.id)
         } catch (e: SocketTimeoutException) {
             throw ServerError
         } catch (e: IOException) {
@@ -72,7 +73,8 @@ class AuthRepositoryImpl @Inject constructor(
             }
             val registration =
                 response.body() ?: throw ApiError(response.code(), response.message())
-            registration.token?.let { appAuth.setAuth(registration.id, it) }
+//            registration.token?.let { appAuth.setAuth(registration.id, it) }
+            appAuth.setAuth(registration.id)
         } catch (e: SocketTimeoutException) {
             throw ServerError
         } catch (e: IOException) {

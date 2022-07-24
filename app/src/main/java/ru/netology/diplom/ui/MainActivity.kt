@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,7 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -106,18 +105,18 @@ class MainActivity : AppCompatActivity() {
             viewModel.loadUser(it?.id ?: 0L)
         }
 
-        //загрузить аватарку в боттом навигайшен, как в инсте
         viewModel.user.observe(this) { user ->
             if (user?.avatar?.isNotBlank() == true) {
-                Glide.with(this@MainActivity)
+                Glide.with(this)
                     .asBitmap()
                     .load("${user.avatar}")
-                    .transform(CircleCrop())
+                    .apply(RequestOptions.circleCropTransform())
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(
                             resource: Bitmap,
                             transition: Transition<in Bitmap>?
                         ) {
+                            itemIconUser.iconTintMode = null
                             itemIconUser.icon = BitmapDrawable(resources, resource)
                         }
 

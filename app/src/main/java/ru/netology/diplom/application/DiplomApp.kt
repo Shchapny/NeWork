@@ -11,19 +11,19 @@ import javax.inject.Inject
 @HiltAndroidApp
 class DiplomApp : Application() {
 
-    private val appScore = CoroutineScope(Dispatchers.Default)
-
-    @Inject
-    lateinit var appAuth: AppAuth
-
-    override fun onCreate() {
-        super.onCreate()
-        setupAuth()
-    }
-
-    private fun setupAuth() {
-        appScore.launch {
-            appAuth.sendPushToken()
-        }
-    }
+//    private val appScore = CoroutineScope(Dispatchers.Default)
+//
+//    @Inject
+//    lateinit var appAuth: AppAuth
+//
+//    override fun onCreate() {
+//        super.onCreate()
+//        setupAuth()
+//    }
+//
+//    private fun setupAuth() {
+//        appScore.launch {
+//            appAuth.sendPushToken()
+//        }
+//    }
 }

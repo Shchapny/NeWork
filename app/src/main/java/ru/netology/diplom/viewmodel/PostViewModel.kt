@@ -35,7 +35,8 @@ class PostViewModel @Inject constructor(
     private val cached = postRepository.data.cachedIn(viewModelScope)
 
     val data = appAuth.authStateFlow
-        .flatMapLatest { (myId, _) ->
+//        .flatMapLatest { (myId, _) ->
+        .flatMapLatest { (myId) ->
             cached.map { pagingData ->
                 pagingData.map { post ->
                     post.copy(
@@ -61,7 +62,7 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
-    fun loadPosts() = viewModelScope.launch {
+    private fun loadPosts() = viewModelScope.launch {
         _dataState.value = FeedModelState(loading = true)
         try {
             postRepository.getLatest()

@@ -36,7 +36,8 @@ class EventViewModel @Inject constructor(
     private val cached = eventRepository.data.cachedIn(viewModelScope)
 
     val data = appAuth.authStateFlow
-        .flatMapLatest { (myId, _) ->
+//        .flatMapLatest { (myId, _) ->
+        .flatMapLatest { (myId) ->
             cached.map { pagingData ->
                 pagingData.map { event ->
                     event.copy(
@@ -63,7 +64,7 @@ class EventViewModel @Inject constructor(
         loadEvents()
     }
 
-    fun loadEvents() = viewModelScope.launch {
+    private fun loadEvents() = viewModelScope.launch {
         _dataState.value = FeedModelState(loading = true)
         try {
             eventRepository.getLatest()

@@ -19,7 +19,7 @@ data class EventEntity(
     val datetime: String,
     @Embedded
     val type: EventTypeEmbeddable,
-    val link: String,
+    val link: String?,
     val speakerIds: Set<Long> = emptySet(),
     @Embedded
     val attachment: AttachmentEmbeddable? = null,

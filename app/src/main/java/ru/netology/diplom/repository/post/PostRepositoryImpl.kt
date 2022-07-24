@@ -131,7 +131,7 @@ class PostRepositoryImpl @Inject constructor(
             val likeByMe = postDao.getById(id).likedByMe
             postDao.likeByMe(id)
 
-            val response = if (likeByMe) {
+            val response = if (!likeByMe) {
                 postApiService.likeById(id)
             } else {
                 postApiService.dislikeById(id)
