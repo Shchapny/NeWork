@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/postFeedFragment"
-        android:icon="@drawable/ic_posts"
+        android:icon="@drawable/posts_icon_selector"
         android:title="@string/posts" />
 
     <item
         android:id="@+id/eventFeedFragment"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/events_icon_selector"
         android:title="@string/events" />
 
     <item
         android:id="@+id/jobFeedFragment"
-        android:icon="@drawable/ic_job"
+        android:icon="@drawable/jobs_icon_selector"
         android:title="@string/job" />
 
     <item

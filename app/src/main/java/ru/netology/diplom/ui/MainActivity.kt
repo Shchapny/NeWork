@@ -4,13 +4,13 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -47,11 +47,15 @@ class MainActivity : AppCompatActivity() {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_auth, menu)
+                Log.d("menu", "onCreateMenu 1")
 
                 menu.let {
                     it.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
+                    Log.d("menu", "${!viewModel.authenticated} 1")
                     it.setGroupVisible(R.id.authenticated, viewModel.authenticated)
+                    Log.d("menu", "${viewModel.authenticated} 2")
                 }
+                Log.d("menu", "onCreateMenu 2")
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -69,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                             .setMessage(R.string.refine_signout)
                             .setPositiveButton(R.string.sign_out) { _, _ ->
                                 appAuth.removeAuth()
-                                findNavController(R.id.nav_host_fragment_container).navigateUp()
+                                return@setPositiveButton
                             }
                             .setNegativeButton(R.string.cancel) { _, _ ->
                                 return@setNegativeButton
@@ -82,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         val bottomNavigation = binding.navigation
+        bottomNavigation.itemIconTintList = null
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
@@ -103,10 +108,10 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.dataAuth.observe(this) {
             invalidateOptionsMenu()
+            Log.d("menu", "${invalidateOptionsMenu()} invalidate")
             viewModel.loadUser(it?.id ?: 0L)
         }
 
-        //загрузить аватарку в боттом навигайшен, как в инсте
         viewModel.user.observe(this) { user ->
             if (user?.avatar?.isNotBlank() == true) {
                 Glide.with(this@MainActivity)

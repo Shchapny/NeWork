@@ -5,7 +5,6 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.netology.diplom.data.dto.User
-import ru.netology.diplom.data.dto.token.PushToken
 import ru.netology.diplom.model.state.AuthState
 
 interface AuthApiService {
@@ -36,8 +35,4 @@ interface AuthApiService {
         @Part("name") name: RequestBody,
         @Part file: MultipartBody.Part
     ): Response<AuthState>
-
-    //в swagger нет такой реализации
-    @POST("users/push-tokens")
-    suspend fun saveToken(@Body pushToken: PushToken): Response<Unit>
 }
