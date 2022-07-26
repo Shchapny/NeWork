@@ -1,19 +1,17 @@
 package ru.netology.diplom.repository.auth
 
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.diplom.api.AuthApiService
-import ru.netology.diplom.authorization.AppAuth
+import ru.netology.diplom.data.dto.Token
 import ru.netology.diplom.data.dto.User
 import ru.netology.diplom.data.dto.media.MediaUpload
 import ru.netology.diplom.error.ApiError
 import ru.netology.diplom.error.NetworkError
 import ru.netology.diplom.error.ServerError
 import ru.netology.diplom.error.UnknownError
-import ru.netology.diplom.model.state.AuthState
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -21,12 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val authApiService: AuthApiService,
-    private val appAuth: AppAuth
+    private val authApiService: AuthApiService
 ) : AuthRepository {
-
-    override val dataAuth: Flow<AuthState> get() = appAuth.authStateFlow
-    override val authenticated: Boolean get() = appAuth.authStateFlow.value.id != 0L
 
     override suspend fun getUserById(id: Long): User {
         try {
@@ -44,17 +38,13 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun authentication(login: String, password: String) {
+    override suspend fun authentication(login: String, password: String): Token {
         try {
             val response = authApiService.authentication(login, password)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-
-            val authentication =
-                response.body() ?: throw ApiError(response.code(), response.message())
-
-            authentication.token?.let { appAuth.setAuth(authentication.id, it) }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: SocketTimeoutException) {
             throw ServerError
         } catch (e: IOException) {
@@ -64,15 +54,13 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun registerUser(login: String, password: String, name: String) {
+    override suspend fun registerUser(login: String, password: String, name: String): Token {
         try {
             val response = authApiService.registerUser(login, password, name)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val registration =
-                response.body() ?: throw ApiError(response.code(), response.message())
-            registration.token?.let { appAuth.setAuth(registration.id, it) }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: SocketTimeoutException) {
             throw ServerError
         } catch (e: IOException) {
@@ -87,7 +75,7 @@ class AuthRepositoryImpl @Inject constructor(
         password: String,
         name: String,
         mediaUpload: MediaUpload
-    ) {
+    ): Token {
         try {
             val loginRequest = login.toRequestBody("text/plain".toMediaType())
             val passRequest = password.toRequestBody("text/plain".toMediaType())
@@ -102,6 +90,7 @@ class AuthRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: SocketTimeoutException) {
             throw ServerError
         } catch (e: IOException) {

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.netology.diplom.authorization.AppAuth
 import ru.netology.diplom.data.dto.media.MediaUpload
 import ru.netology.diplom.error.NetworkError
 import ru.netology.diplom.error.ServerError
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val appAuth: AppAuth
 ) : ViewModel() {
 
     private val _dataState = MutableLiveData(FeedModelState())
@@ -32,9 +34,14 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 if (avatar == null) {
-                    repository.registerUser(login, password, name)
+                    repository.registerUser(login, password, name).let { auth ->
+                        appAuth.setAuth(auth.id, auth.token)
+                    }
                 } else {
                     repository.registerWithPhoto(login, password, name, MediaUpload(avatar))
+                        .let { auth ->
+                            appAuth.setAuth(auth.id, auth.token)
+                        }
                 }
                 _dataState.value = FeedModelState(authState = true)
             } catch (e: ServerError) {

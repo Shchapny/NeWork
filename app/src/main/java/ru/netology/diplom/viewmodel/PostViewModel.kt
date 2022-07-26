@@ -57,36 +57,12 @@ class PostViewModel @Inject constructor(
 
     private val edited = MutableLiveData(emptyPost)
 
-    init {
-        loadPosts()
-    }
-
-    private fun loadPosts() = viewModelScope.launch {
-        _dataState.value = FeedModelState(loading = true)
-        try {
-            postRepository.getLatest()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun refresh() = viewModelScope.launch {
-        _dataState.value = FeedModelState(refreshing = true)
-        try {
-            postRepository.getLatest()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
     fun save() {
         edited.value?.let { post ->
-            _postCreated.postValue(Unit)
             viewModelScope.launch {
                 try {
                     postRepository.save(post, _photo.value?.file?.let { file -> MediaUpload(file) })
+                    _postCreated.postValue(Unit)
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }

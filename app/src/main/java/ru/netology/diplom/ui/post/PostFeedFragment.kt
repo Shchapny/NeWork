@@ -84,11 +84,11 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
         })
         binding.container.adapter = adapter
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenCreated {
             postViewModel.data.collectLatest(adapter::submitData)
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted {
             adapter.loadStateFlow.collectLatest { state ->
                 binding.swipeRefresh.isRefreshing = state.refresh is LoadState.Loading
             }
@@ -100,15 +100,13 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
                 swipeRefresh.isRefreshing = state.refreshing
                 if (state.error) {
                     Snackbar.make(root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.retry_loading) { postViewModel.refresh() }
+                        .setAction(R.string.retry_loading) { adapter.refresh() }
                         .show()
                 }
             }
         }
 
-        authViewModel.dataAuth.observe(viewLifecycleOwner) {
-            adapter.refresh()
-        }
+        authViewModel.dataAuth.observe(viewLifecycleOwner) { adapter.refresh() }
 
 
         binding.apply {

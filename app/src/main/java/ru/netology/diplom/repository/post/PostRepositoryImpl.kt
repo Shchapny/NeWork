@@ -15,7 +15,7 @@ import ru.netology.diplom.data.dto.entity.Post
 import ru.netology.diplom.data.dto.media.Media
 import ru.netology.diplom.data.dto.media.MediaUpload
 import ru.netology.diplom.data.entity.PostEntity
-import ru.netology.diplom.data.entity.toEntity
+import ru.netology.diplom.data.entity.toPostEntity
 import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.error.ApiError
 import ru.netology.diplom.error.DbError
@@ -60,28 +60,6 @@ class PostRepositoryImpl @Inject constructor(
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(PostEntity.fromDto(body))
-        } catch (e: ApiError) {
-            throw e
-        } catch (e: SocketTimeoutException) {
-            throw ServerError
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: SQLException) {
-            throw DbError
-        } catch (e: Exception) {
-            throw UnknownError
-        }
-    }
-
-    override suspend fun getLatest() {
-        try {
-            val response = postApiService.getLatest(10)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(body.toEntity())
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {

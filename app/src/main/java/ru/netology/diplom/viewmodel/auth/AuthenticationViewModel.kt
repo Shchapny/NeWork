@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.netology.diplom.authorization.AppAuth
 import ru.netology.diplom.error.NetworkError
 import ru.netology.diplom.error.ServerError
 import ru.netology.diplom.error.UnknownError
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val appAuth: AppAuth
 ) : ViewModel() {
 
     private val _dataState = MutableLiveData(FeedModelState())
@@ -23,7 +25,9 @@ class AuthenticationViewModel @Inject constructor(
 
     fun authentication(login: String, password: String) = viewModelScope.launch {
         try {
-            repository.authentication(login, password)
+            repository.authentication(login, password).let { auth ->
+                appAuth.setAuth(auth.id, auth.token)
+            }
             _dataState.value = FeedModelState(authState = true)
         } catch (e: ServerError) {
             _dataState.value = FeedModelState(server = true)

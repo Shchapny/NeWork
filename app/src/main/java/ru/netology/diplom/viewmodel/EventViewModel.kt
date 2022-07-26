@@ -59,30 +59,6 @@ class EventViewModel @Inject constructor(
 
     private val edited = MutableLiveData(emptyEvent)
 
-    init {
-        loadEvents()
-    }
-
-    private fun loadEvents() = viewModelScope.launch {
-        _dataState.value = FeedModelState(loading = true)
-        try {
-            eventRepository.getLatest()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun refresh() = viewModelScope.launch {
-        _dataState.value = FeedModelState(refreshing = true)
-        try {
-            eventRepository.getLatest()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
     fun save() {
         edited.value?.let { event ->
             _eventCreated.value = Unit

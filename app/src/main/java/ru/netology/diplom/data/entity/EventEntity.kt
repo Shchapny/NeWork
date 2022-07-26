@@ -75,4 +75,4 @@ data class EventEntity(
     }
 }
 
-fun List<Event>.toEntity(): List<EventEntity> = map(EventEntity::fromDto)
+fun List<Event>.toEventEntity(): List<EventEntity> = map(EventEntity::fromDto)

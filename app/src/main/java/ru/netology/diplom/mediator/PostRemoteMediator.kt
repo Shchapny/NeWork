@@ -61,6 +61,7 @@ class PostRemoteMediator @Inject constructor(
                                 )
                             )
                         }
+                        postDao.removeAll()
                     }
                     LoadType.PREPEND -> {
                         postRemoteKeyDao.insert(

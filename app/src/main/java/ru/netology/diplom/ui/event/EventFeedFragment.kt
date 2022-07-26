@@ -2,10 +2,10 @@ package ru.netology.diplom.ui.event
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -114,7 +114,7 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
                 swipeRefresh.isRefreshing = state.refreshing
                 if (state.error) {
                     Snackbar.make(root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.retry_loading) { eventViewModel.refresh() }
+                        .setAction(R.string.retry_loading) { adapter.refresh() }
                         .show()
                 }
             }

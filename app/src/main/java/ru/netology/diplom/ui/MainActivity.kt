@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -47,15 +46,11 @@ class MainActivity : AppCompatActivity() {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_auth, menu)
-                Log.d("menu", "onCreateMenu 1")
 
                 menu.let {
                     it.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
-                    Log.d("menu", "${!viewModel.authenticated} 1")
                     it.setGroupVisible(R.id.authenticated, viewModel.authenticated)
-                    Log.d("menu", "${viewModel.authenticated} 2")
                 }
-                Log.d("menu", "onCreateMenu 2")
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -108,7 +103,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.dataAuth.observe(this) {
             invalidateOptionsMenu()
-            Log.d("menu", "${invalidateOptionsMenu()} invalidate")
             viewModel.loadUser(it?.id ?: 0L)
         }
 
