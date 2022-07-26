@@ -10,8 +10,6 @@ import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-//функцию для события не забыть
-
 fun Long.convertLongToString(): String {
     val date = this
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -25,7 +23,19 @@ fun String.convertStringToLong(): Long? {
 
 fun String.dateFormatEntity(): String {
     val oldFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)
-    val newFormat = SimpleDateFormat("dd MMM yyyy г.", Locale.getDefault())
+    val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    return newFormat.format(oldFormat as Date)
+}
+
+fun String.sendEventDate(): String {
+    val oldFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).parse(this)
+    val newFormat = SimpleDateFormat("YYYY-MM-dd", Locale.getDefault())
+    return newFormat.format(oldFormat as Date)
+}
+
+fun String.timeFormatEntity(): String {
+    val oldFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault()).parse(this)
+    val newFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
     return newFormat.format(oldFormat as Date)
 }
 

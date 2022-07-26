@@ -58,7 +58,11 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
 
             override fun onLike(event: Event) {
                 if (authViewModel.authenticated) {
-                    eventViewModel.likeById(event.id)
+                    if (!event.likedByMe) {
+                        eventViewModel.likeById(event.id)
+                    } else {
+                        eventViewModel.dislikeById(event.id)
+                    }
                 } else {
                     findNavController().navigate(R.id.action_eventFeedFragment_to_authenticationFragment)
                 }
@@ -81,7 +85,15 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
             }
 
             override fun onParticipate(event: Event) {
-                eventViewModel.participateById(event.id)
+                if (authViewModel.authenticated) {
+                    if (!event.participatedByMe) {
+                        eventViewModel.participateById(event.id)
+                    } else {
+                        eventViewModel.refuseById(event.id)
+                    }
+                } else {
+                    findNavController().navigate(R.id.action_eventFeedFragment_to_authenticationFragment)
+                }
             }
         })
         binding.container.adapter = adapter

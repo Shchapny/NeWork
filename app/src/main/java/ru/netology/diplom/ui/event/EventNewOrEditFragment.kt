@@ -55,6 +55,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                             val eventDate = binding.eventDate.text.toString()
                             val eventTime = binding.eventTime.text.toString()
                             val description = binding.eventDesc.text.toString()
+                            val link = binding.eventLink.text.toString()
                             when {
                                 eventDate.isBlank() -> binding.eventDateLayout.error =
                                     getString(R.string.error_event_date)
@@ -62,11 +63,14 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                                     getString(R.string.error_event_time)
                                 description.isBlank() -> binding.eventDescLayout.error =
                                     getString(R.string.error_description)
+                                link.isBlank() -> binding.eventLinkLayout.error =
+                                    getString(R.string.error_link)
                                 else -> {
                                     viewModel.changeContent(
                                         description,
-                                        "$eventDate $eventTime",
-                                        resources.getResourceEntryName(binding.type.checkedRadioButtonId)
+                                        "${eventDate.sendEventDate()}T$eventTime",
+                                        resources.getResourceEntryName(binding.type.checkedRadioButtonId),
+                                        link
                                     )
                                     viewModel.save()
                                     hideKeyboard(requireView())
@@ -82,13 +86,15 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
 
         navArgs.eventArgs?.let { event ->
             binding.apply {
-                eventDate.setText(event.datetime.substringBefore(" "))
-                eventTime.setText(event.datetime.substringAfter(" "))
+                eventDate.setText(event.datetime.substringBefore("T").dateFormatEntity())
+                eventTime.setText(event.datetime.substringAfter("T").timeFormatEntity())
                 eventDesc.setText(event.content)
-                resources.getIdentifier(event.type.name.lowercase(), "id", context?.packageName).let { id ->
-                    val type = binding.root.findViewById<RadioButton>(id)
-                    type.isChecked = true
-                }
+                eventLink.setText(event.link)
+                resources.getIdentifier(event.type.name.lowercase(), "id", context?.packageName)
+                    .let { id ->
+                        val type = binding.root.findViewById<RadioButton>(id)
+                        type.isChecked = true
+                    }
             }
         }
 
@@ -111,10 +117,10 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
 
         binding.apply {
             includeBottom.pickPhoto.setOnClickListener {
-                loadFromCamera(this@EventNewOrEditFragment, 2048, photoLauncher::launch)
+                loadFromGallery(this@EventNewOrEditFragment, 2048, photoLauncher::launch)
             }
             includeBottom.takePhoto.setOnClickListener {
-                loadFromGallery(this@EventNewOrEditFragment, 2048, photoLauncher::launch)
+                loadFromCamera(this@EventNewOrEditFragment, 2048, photoLauncher::launch)
             }
             includePhoto.removePhoto.setOnClickListener {
                 viewModel.changePhoto(null, null)
@@ -123,7 +129,11 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                 selectDateDialog(eventDateLayout.editText, requireParentFragment())
             }
             eventTime.setOnClickListener {
-                selectTimeDialog(eventTimeLayout.editText, requireParentFragment(), requireContext())
+                selectTimeDialog(
+                    eventTimeLayout.editText,
+                    requireParentFragment(),
+                    requireContext()
+                )
             }
         }
 
@@ -149,6 +159,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
             eventDateLayout.error = null
             eventTimeLayout.error = null
             eventDescLayout.error = null
+            eventLinkLayout.error = null
         }
     }
 

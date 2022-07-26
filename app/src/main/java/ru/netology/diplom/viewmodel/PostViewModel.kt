@@ -61,7 +61,7 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
-    fun loadPosts() = viewModelScope.launch {
+    private fun loadPosts() = viewModelScope.launch {
         _dataState.value = FeedModelState(loading = true)
         try {
             postRepository.getLatest()
@@ -108,6 +108,15 @@ class PostViewModel @Inject constructor(
     fun likeById(id: Long) = viewModelScope.launch {
         try {
             postRepository.likeById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun dislikeById(id: Long) = viewModelScope.launch {
+        try {
+            postRepository.dislikeById(id)
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)

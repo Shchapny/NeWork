@@ -11,7 +11,7 @@ data class Post(
     val author: String = "",
     val authorAvatar: String? = null,
     val content: String = "",
-    val published: String = "03 июн 2022",
+    val published: String = "2022-07-13T07:58:57.835201Z",
     val link: String? = null,
     val attachment: Attachment? = null,
     val ownedByMe: Boolean = false,

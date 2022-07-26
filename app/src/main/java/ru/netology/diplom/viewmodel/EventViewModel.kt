@@ -63,7 +63,7 @@ class EventViewModel @Inject constructor(
         loadEvents()
     }
 
-    fun loadEvents() = viewModelScope.launch {
+    private fun loadEvents() = viewModelScope.launch {
         _dataState.value = FeedModelState(loading = true)
         try {
             eventRepository.getLatest()
@@ -118,9 +118,27 @@ class EventViewModel @Inject constructor(
         }
     }
 
+    fun dislikeById(id: Long) = viewModelScope.launch {
+        try {
+            eventRepository.dislikeById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
     fun participateById(id: Long) = viewModelScope.launch {
         try {
             eventRepository.participateById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun refuseById(id: Long) = viewModelScope.launch {
+        try {
+            eventRepository.refuseById(id)
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
@@ -131,12 +149,13 @@ class EventViewModel @Inject constructor(
         edited.value = event
     }
 
-    fun changeContent(content: String, datetime: String, type: String) {
+    fun changeContent(content: String, datetime: String, type: String, link: String) {
         val format = EventTypeEmbeddable(type.trim().uppercase()).toDto()
-        if (content == edited.value?.content && datetime == edited.value?.datetime && format == edited.value?.type) {
+        if (content == edited.value?.content && datetime == edited.value?.datetime && format == edited.value?.type && link == edited.value?.link) {
             return
         }
-        edited.value = edited.value?.copy(content = content, datetime = datetime, type = format)
+        edited.value =
+            edited.value?.copy(content = content, datetime = datetime, type = format, link = link)
     }
 
     fun changePhoto(uri: Uri?, file: File?) {

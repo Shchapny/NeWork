@@ -23,13 +23,13 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="authentication">Authentication</string>
-    <string name="error_login">Enter login</string>
-    <string name="error_password">Enter password</string>
+    <string name="error_login">Input login</string>
+    <string name="error_password">Input password</string>
     <string name="refine_signout">Do you want to sign out?</string>
     <string name="cancel">Cancel</string>
     <string name="name">User name</string>
     <string name="password_conf">Password confirmation</string>
-    <string name="error_name">Enter user name</string>
+    <string name="error_name">Input user name</string>
     <string name="error_conf_password">The entered passwords do not match</string>
     <string name="registration">Registration</string>
     <string name="warning_login_or_pass">Invalid username or password</string>
@@ -64,11 +64,13 @@
     <string name="job">Job</string>
     <string name="refuse">Refuse</string>
     <string name="user">User</string>
-    <string name="error_startdate">Enter start date</string>
-    <string name="error_company">Enter company</string>
-    <string name="error_position">Enter position</string>
-    <string name="error_event_date">Enter event date</string>
-    <string name="error_event_time">Enter event time</string>
-    <string name="error_description">Entet description</string>
+    <string name="error_startdate">Input start date</string>
+    <string name="error_company">Input company</string>
+    <string name="error_position">Input position</string>
+    <string name="error_event_date">Input event date</string>
+    <string name="error_event_time">Input event time</string>
+    <string name="error_description">Input description</string>
     <string name="jobs">Jobs</string>
+    <string name="error_link">Input link</string>
+    <string name="event_datetime">%1$s at %2$s</string>
 </resources>

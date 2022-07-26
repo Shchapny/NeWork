@@ -25,10 +25,8 @@ import java.sql.SQLException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val ITEM_COUNT = 10
-
-@OptIn(ExperimentalPagingApi::class)
 @Singleton
+@OptIn(ExperimentalPagingApi::class)
 class EventRepositoryImpl @Inject constructor(
     private val eventApiService: EventApiService,
     private val mediaApiService: MediaApiService,
@@ -39,7 +37,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override val data: Flow<PagingData<Event>> = Pager(
         remoteMediator = EventRemoteMediator(eventApiService, eventDao, eventRemoteKeyDao, appDb),
-        config = PagingConfig(pageSize = ITEM_COUNT, enablePlaceholders = false),
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
         pagingSourceFactory = eventDao::getPagingSource
     ).flow.map {
         it.map(EventEntity::toDto)
@@ -73,7 +71,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun getLatest() {
         try {
-            val response = eventApiService.getLatest(ITEM_COUNT)
+            val response = eventApiService.getLatest(10)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -126,17 +124,35 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun likeById(id: Long) {
         try {
-            val likeByMe = eventDao.getById(id).likedByMe
             eventDao.likeByMe(id)
-
-            val response = if (likeByMe) {
-                eventApiService.likeById(id)
-            } else {
-                eventApiService.dislikeById(id)
-            }
+            val response = eventApiService.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
+        } catch (e: ApiError) {
+            throw e
+        } catch (e: SocketTimeoutException) {
+            throw ServerError
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: SQLException) {
+            throw DbError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun dislikeById(id: Long) {
+        try {
+            eventDao.likeByMe(id)
+            val response = eventApiService.dislikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -177,17 +193,35 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun participateById(id: Long) {
         try {
-            val participateById = eventDao.getById(id).participatedByMe
             eventDao.participateByMe(id)
-
-            val response = if (participateById) {
-                eventApiService.participateById(id)
-            } else {
-                eventApiService.refuseById(id)
-            }
+            val response = eventApiService.participateById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
+        } catch (e: ApiError) {
+            throw e
+        } catch (e: SocketTimeoutException) {
+            throw ServerError
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: SQLException) {
+            throw DbError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun refuseById(id: Long) {
+        try {
+            eventDao.participateByMe(id)
+            val response = eventApiService.refuseById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {

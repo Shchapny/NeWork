@@ -29,7 +29,13 @@ interface PostDao {
     @Query("UPDATE PostEntity SET content = :content WHERE id = :id")
     suspend fun updateContentById(id: Long, content: String)
 
-    @Query("UPDATE PostEntity SET likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id = :id")
+    @Query(
+        """
+        UPDATE PostEntity SET
+        likeOwnerIds = likeOwnerIds + CASE WHEN likedByMe THEN -1 ELSE 1 END, 
+        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id = :id;
+        """
+    )
     suspend fun likeByMe(id: Long)
 
     @Query("DELETE FROM PostEntity WHERE id = :id")
@@ -39,5 +45,9 @@ interface PostDao {
     suspend fun removeAll()
 
     suspend fun savePost(post: PostEntity) =
-        if (post.id == 0L) insert(post) else updateContentById(post.id, post.content)
+        if (post.id == 0L) {
+            insert(post)
+        } else {
+            updateContentById(post.id, post.content)
+        }
 }

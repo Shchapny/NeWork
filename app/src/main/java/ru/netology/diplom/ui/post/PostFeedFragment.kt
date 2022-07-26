@@ -56,7 +56,11 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
 
             override fun onLike(post: Post) {
                 if (authViewModel.authenticated) {
-                    postViewModel.likeById(post.id)
+                    if (!post.likedByMe) {
+                        postViewModel.likeById(post.id)
+                    } else {
+                        postViewModel.dislikeById(post.id)
+                    }
                 } else {
                     findNavController().navigate(R.id.action_postFeedFragment_to_authenticationFragment)
                 }

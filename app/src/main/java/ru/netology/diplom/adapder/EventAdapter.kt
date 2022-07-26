@@ -14,6 +14,7 @@ import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.util.count
 import ru.netology.diplom.util.dateFormatEntity
 import ru.netology.diplom.util.loadImage
+import ru.netology.diplom.util.timeFormatEntity
 
 interface EventActionListener {
     fun onEdit(event: Event)
@@ -50,20 +51,23 @@ class EventViewHolder(
             author.text = event.author
             content.text = event.content
             published.text = event.published.dateFormatEntity()
-            eventDate.text = event.datetime
+
+            val date = event.datetime.substringBefore("T").dateFormatEntity()
+            val time = event.datetime.substringAfter("T").timeFormatEntity()
+            eventDate.text = root.context.getString(R.string.event_datetime, date, time)
+
             eventType.text = event.type.format
+            eventLink.text = event.link
 
             likes.text = count(event.likeOwnerIds.size.toLong())
             likes.isChecked = event.likedByMe
 
             participants.text = count(event.participantsIds.size.toLong())
             participate.apply {
-                if (event.participatedByMe) {
-                    text = root.context.getString(R.string.refuse)
-                    setBackgroundColor(R.color.red)
+                text = if (event.participatedByMe) {
+                    root.context.getString(R.string.refuse)
                 } else {
                     root.context.getString(R.string.participate)
-                    setBackgroundColor(R.color.teal_200)
                 }
             }
 

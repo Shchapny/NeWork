@@ -29,14 +29,21 @@ interface EventDao {
     @Query("UPDATE EventEntity SET content = :content WHERE id = :id")
     suspend fun updateContentById(id: Long, content: String)
 
-    @Query("UPDATE EventEntity SET likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id =:id")
+    @Query(
+        """
+        UPDATE EventEntity SET
+        likeOwnerIds  = likeOwnerIds + CASE WHEN likedByMe THEN -1 ELSE 1 END, 
+        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id =:id;
+        """
+    )
     suspend fun likeByMe(id: Long)
 
     @Query(
         """
-        UPDATE EventEntity SET participatedByMe = CASE WHEN participatedByMe THEN 0 ELSE 1 END
-        WHERE id =:id 
-    """
+        UPDATE EventEntity SET
+         participantsIds = participantsIds + CASE WHEN participatedByMe THEN -1 ELSE 1 END,
+        participatedByMe = CASE WHEN participatedByMe THEN 0 ELSE 1 END WHERE id =:id; 
+        """
     )
     suspend fun participateByMe(id: Long)
 

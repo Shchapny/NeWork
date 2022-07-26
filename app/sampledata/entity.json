@@ -13,7 +13,8 @@
     {
       "datetime": "19 июля 2022 в 18:00",
       "type": "Online",
-      "participants": "12"
+      "participants": "12",
+      "linkEvent": "https://www.google.com"
     },
     {
       "company": "Company: Google",
