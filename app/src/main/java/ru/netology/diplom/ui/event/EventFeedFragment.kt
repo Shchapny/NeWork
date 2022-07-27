@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -26,8 +26,8 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
 
     private var _binding: FragmentEventFeedBinding? = null
     private val binding get() = _binding!!
-    private val authViewModel by viewModels<AuthViewModel>()
-    private val eventViewModel by viewModels<EventViewModel>()
+    private val authViewModel by activityViewModels<AuthViewModel>()
+    private val eventViewModel by activityViewModels<EventViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +44,12 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
         val adapter = EventAdapter(object : EventActionListener {
 
             override fun onEdit(event: Event) {
+                eventViewModel.edit(event)
                 val action =
                     EventFeedFragmentDirections.actionEventFeedFragmentToEventNewOrEditFragment(
                         event
                     )
                 findNavController().navigate(action)
-                eventViewModel.edit(event)
             }
 
             override fun onRemove(event: Event) {

@@ -1,12 +1,12 @@
 package ru.netology.diplom.ui.job
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +23,7 @@ class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
 
     private var _binding: FragmentJobFeedBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<JobViewModel>()
+    private val viewModel by activityViewModels<JobViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,5 +84,4 @@ class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
         _binding = null
         super.onDestroyView()
     }
-
 }

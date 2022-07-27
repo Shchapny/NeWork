@@ -61,12 +61,12 @@ class EventViewModel @Inject constructor(
 
     fun save() {
         edited.value?.let { event ->
-            _eventCreated.value = Unit
             viewModelScope.launch {
                 try {
                     eventRepository.save(
                         event,
                         _photo.value?.file?.let { file -> MediaUpload(file) })
+                    _eventCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }

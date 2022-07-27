@@ -42,8 +42,10 @@ class EventRepositoryImpl @Inject constructor(
         it.map(EventEntity::toDto)
     }
 
-    override suspend fun save(event: Event, upload: MediaUpload?) {
+    override suspend fun save(event: Event, upload: MediaUpload?): Long {
         try {
+            val eventId = eventDao.saveEvent(EventEntity.fromDto(event))
+
             val media = upload?.let { uploadMedia(it) }
             val eventWithAttachment =
                 media?.let { event.copy(attachment = Attachment(it.url, AttachmentType.IMAGE)) }
@@ -54,7 +56,9 @@ class EventRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            eventDao.insert(EventEntity.fromDto(body))
+            eventDao.insertEvent(EventEntity.fromDto(body))
+
+            return eventId
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -107,7 +111,7 @@ class EventRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            eventDao.insert(EventEntity.fromDto(body))
+            eventDao.insertEvent(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -129,7 +133,7 @@ class EventRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            eventDao.insert(EventEntity.fromDto(body))
+            eventDao.insertEvent(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -176,7 +180,7 @@ class EventRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            eventDao.insert(EventEntity.fromDto(body))
+            eventDao.insertEvent(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -198,7 +202,7 @@ class EventRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            eventDao.insert(EventEntity.fromDto(body))
+            eventDao.insertEvent(EventEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {

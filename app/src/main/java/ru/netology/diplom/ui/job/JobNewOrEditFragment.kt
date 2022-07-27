@@ -5,7 +5,7 @@ import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +23,7 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
 
     private var _binding: FragmentJobNewOrEditBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<JobViewModel>()
+    private val viewModel by activityViewModels<JobViewModel>()
     private val navArgs by navArgs<JobNewOrEditFragmentArgs>()
 
     override fun onCreateView(

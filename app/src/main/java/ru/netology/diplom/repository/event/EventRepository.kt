@@ -8,7 +8,7 @@ import ru.netology.diplom.data.dto.media.MediaUpload
 
 interface EventRepository {
     val data: Flow<PagingData<Event>>
-    suspend fun save(event: Event, upload: MediaUpload?)
+    suspend fun save(event: Event, upload: MediaUpload?): Long
     suspend fun getById(id: Long): Event
     suspend fun removeById(id: Long)
     suspend fun likeById(id: Long)

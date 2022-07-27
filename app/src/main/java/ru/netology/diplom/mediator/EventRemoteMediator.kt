@@ -12,7 +12,6 @@ import ru.netology.diplom.data.db.AppDb
 import ru.netology.diplom.data.entity.EventEntity
 import ru.netology.diplom.data.entity.EventRemoteKeyEntity
 import ru.netology.diplom.error.ApiError
-import java.lang.Exception
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -31,7 +30,6 @@ class EventRemoteMediator @Inject constructor(
             val response = when (loadType) {
                 LoadType.REFRESH -> eventApiService.getLatest(state.config.pageSize)
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-
                 LoadType.APPEND -> {
                     val id = eventRemoteKeyDao.min() ?: return MediatorResult.Success(
                         endOfPaginationReached = false
@@ -63,6 +61,7 @@ class EventRemoteMediator @Inject constructor(
                                 )
                             )
                         }
+                        eventDao.removeAll()
                     }
                     LoadType.PREPEND -> {
                         eventRemoteKeyDao.insert(
@@ -81,7 +80,7 @@ class EventRemoteMediator @Inject constructor(
                         )
                     }
                 }
-                eventDao.insert(body.map(EventEntity::fromDto))
+                eventDao.insertEvents(body.map(EventEntity::fromDto))
             }
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
         } catch (e: Exception) {

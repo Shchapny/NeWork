@@ -21,13 +21,13 @@ interface PostDao {
     suspend fun getById(id: Long): PostEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(post: PostEntity)
+    suspend fun insertPost(post: PostEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(posts: List<PostEntity>)
+    suspend fun insertPosts(posts: List<PostEntity>)
 
-    @Query("UPDATE PostEntity SET content = :content WHERE id = :id")
-    suspend fun updateContentById(id: Long, content: String)
+    @Query("UPDATE PostEntity SET content = :content WHERE id = :postId")
+    suspend fun updateContentById(postId: Long, content: String)
 
     @Query(
         """
@@ -44,10 +44,11 @@ interface PostDao {
     @Query("DELETE FROM PostEntity")
     suspend fun removeAll()
 
-    suspend fun savePost(post: PostEntity) =
+    suspend fun savePost(post: PostEntity): Long =
         if (post.id == 0L) {
-            insert(post)
+            insertPost(post)
         } else {
             updateContentById(post.id, post.content)
+            0L
         }
 }

@@ -33,11 +33,13 @@ fun String.sendEventDate(): String {
     return newFormat.format(oldFormat as Date)
 }
 
-fun String.timeFormatEntity(): String {
-    val oldFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault()).parse(this)
-    val newFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+fun String.sendEventTime(): String {
+    val oldFormat = SimpleDateFormat("hh:mm", Locale.getDefault()).parse(this)
+    val newFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
     return newFormat.format(oldFormat as Date)
 }
+
+fun String.timeFormatEntity() = substring(0, 5)
 
 fun selectDateDialog(editText: EditText?, fragment: Fragment) {
     val calendar = Calendar.getInstance()

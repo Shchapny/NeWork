@@ -15,13 +15,8 @@ import ru.netology.diplom.data.dto.entity.Post
 import ru.netology.diplom.data.dto.media.Media
 import ru.netology.diplom.data.dto.media.MediaUpload
 import ru.netology.diplom.data.entity.PostEntity
-import ru.netology.diplom.data.entity.toPostEntity
 import ru.netology.diplom.enumeration.AttachmentType
-import ru.netology.diplom.error.ApiError
-import ru.netology.diplom.error.DbError
-import ru.netology.diplom.error.NetworkError
-import ru.netology.diplom.error.ServerError
-import ru.netology.diplom.error.UnknownError
+import ru.netology.diplom.error.*
 import ru.netology.diplom.mediator.PostRemoteMediator
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -47,8 +42,10 @@ class PostRepositoryImpl @Inject constructor(
         it.map(PostEntity::toDto)
     }
 
-    override suspend fun save(post: Post, upload: MediaUpload?) {
+    override suspend fun save(post: Post, upload: MediaUpload?): Long {
         try {
+            val postId = postDao.savePost(PostEntity.fromDto(post))
+
             val media = upload?.let { uploadMedia(it) }
             val postWithAttachment =
                 media?.let { post.copy(attachment = Attachment(it.url, AttachmentType.IMAGE)) }
@@ -59,7 +56,9 @@ class PostRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
+            postDao.insertPost(PostEntity.fromDto(body))
+
+            return postId
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -112,7 +111,7 @@ class PostRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
+            postDao.insertPost(PostEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -134,7 +133,7 @@ class PostRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
+            postDao.insertPost(PostEntity.fromDto(body))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {

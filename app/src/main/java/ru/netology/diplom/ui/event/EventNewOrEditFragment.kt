@@ -9,7 +9,7 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -25,7 +25,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
 
     private var _binding: FragmentEventNewOrEditBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<EventViewModel>()
+    private val viewModel by activityViewModels<EventViewModel>()
     private val navArgs by navArgs<EventNewOrEditFragmentArgs>()
 
     override fun onCreateView(
@@ -68,7 +68,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                                 else -> {
                                     viewModel.changeContent(
                                         description,
-                                        "${eventDate.sendEventDate()}T$eventTime",
+                                        "${eventDate.sendEventDate()}T${eventTime.sendEventTime()}Z",
                                         resources.getResourceEntryName(binding.type.checkedRadioButtonId),
                                         link
                                     )

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -26,8 +26,8 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
 
     private var _binding: FragmentPostFeedBinding? = null
     private val binding get() = _binding!!
-    private val authViewModel by viewModels<AuthViewModel>()
-    private val postViewModel by viewModels<PostViewModel>()
+    private val authViewModel by activityViewModels<AuthViewModel>()
+    private val postViewModel by activityViewModels<PostViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +44,10 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
         val adapter = PostAdapter(object : PostActionListener {
 
             override fun onEdit(post: Post) {
+                postViewModel.edit(post)
                 val action =
                     PostFeedFragmentDirections.actionPostFeedFragmentToPostNewOrEditFragment(post)
                 findNavController().navigate(action)
-                postViewModel.edit(post)
             }
 
             override fun onRemove(post: Post) {

@@ -8,7 +8,7 @@ import androidx.core.net.toFile
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -26,7 +26,7 @@ class PostNewOrEditFragment : Fragment(R.layout.fragment_post_new_or_edit) {
 
     private var _binding: FragmentPostNewOrEditBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<PostViewModel>()
+    private val viewModel by activityViewModels<PostViewModel>()
     private val navArgs by navArgs<PostNewOrEditFragmentArgs>()
 
     override fun onCreateView(
