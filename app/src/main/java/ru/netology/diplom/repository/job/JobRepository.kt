@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import ru.netology.diplom.data.dto.entity.Job
 
 interface JobRepository {
-    val data: Flow<List<Job>>
-    suspend fun save(job: Job)
-    suspend fun getAll()
+    fun data(userId: Long): Flow<List<Job>>
+    suspend fun save(job: Job, userId: Long): Long
+    suspend fun getByUserId(id: Long)
     suspend fun removeById(id: Long)
 }

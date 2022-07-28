@@ -12,9 +12,9 @@ import ru.netology.diplom.data.dto.entity.Event
 import ru.netology.diplom.databinding.CardEventBinding
 import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.util.count
-import ru.netology.diplom.util.dateFormatEntity
+import ru.netology.diplom.util.dateFormat
 import ru.netology.diplom.util.loadImage
-import ru.netology.diplom.util.timeFormatEntity
+import ru.netology.diplom.util.timeFormat
 
 interface EventActionListener {
     fun onEdit(event: Event)
@@ -50,10 +50,10 @@ class EventViewHolder(
             avatar.loadImage(event.authorAvatar.toString(), "avatars")
             author.text = event.author
             content.text = event.content
-            published.text = event.published.dateFormatEntity()
+            published.text = event.published.dateFormat()
 
-            val date = event.datetime.substringBefore("T").dateFormatEntity()
-            val time = event.datetime.substringAfter("T").timeFormatEntity()
+            val date = event.datetime.substringBefore("T").dateFormat()
+            val time = event.datetime.substringAfter("T").timeFormat()
             eventDate.text = root.context.getString(R.string.event_datetime, date, time)
 
             eventType.text = event.type.format

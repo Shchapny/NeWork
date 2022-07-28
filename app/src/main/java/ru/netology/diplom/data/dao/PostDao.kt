@@ -33,7 +33,8 @@ interface PostDao {
         """
         UPDATE PostEntity SET
         likeOwnerIds = likeOwnerIds + CASE WHEN likedByMe THEN -1 ELSE 1 END, 
-        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id = :id;
+        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
+        WHERE id = :id;
         """
     )
     suspend fun likeByMe(id: Long)

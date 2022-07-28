@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.diplom.R
 import ru.netology.diplom.data.dto.entity.Job
 import ru.netology.diplom.databinding.CardJobBinding
-import ru.netology.diplom.util.convertLongToString
+import ru.netology.diplom.util.dateFormat
 
 interface JobActionListener {
     fun onEdit(job: Job)
@@ -45,13 +45,13 @@ class JobViewHolder(
             workExperience.text = if (job.finish == null) {
                 root.context.getString(
                     R.string.work_experience_now,
-                    job.start.convertLongToString()
+                    job.start.dateFormat()
                 )
             } else {
                 root.context.getString(
                     R.string.work_experience,
-                    job.start.convertLongToString(),
-                    job.finish.convertLongToString()
+                    job.start.dateFormat(),
+                    job.finish.dateFormat()
                 )
             }
 

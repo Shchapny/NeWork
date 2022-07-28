@@ -7,7 +7,7 @@
     <string name="add">Add entity</string>
     <string name="error_loading">Something went wrong. Try again later</string>
     <string name="retry_loading">Retry</string>
-    <string name="empty_entity">There are no %1$s.\nIf you create a new post, it will appear here</string>
+    <string name="empty_entity">There are no %1$s.\nIf you create a new %1$s, it will appear here</string>
     <string name="error_network">Error network</string>
     <string name="error_unknown">Error unknown</string>
     <string name="db_error">Error Data base</string>
@@ -73,4 +73,9 @@
     <string name="jobs">Jobs</string>
     <string name="error_link">Input link</string>
     <string name="event_datetime">%1$s at %2$s</string>
+    <string name="image_avatar">Image avatar</string>
+    <string name="menu">menu</string>
+    <string name="image_content">Image content</string>
+    <string name="select_image_avatar">Select image avatar</string>
+    <string name="notauthorized">You are not authorized</string>
 </resources>

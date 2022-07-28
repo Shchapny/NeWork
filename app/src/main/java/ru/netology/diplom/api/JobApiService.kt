@@ -6,8 +6,8 @@ import ru.netology.diplom.data.dto.entity.Job
 
 interface JobApiService {
 
-    @GET("my/jobs")
-    suspend fun getAll(): Response<List<Job>>
+    @GET("{id}/jobs")
+    suspend fun getByUserId(@Path("id") id: Long): Response<List<Job>>
 
     @POST("my/jobs")
     suspend fun save(@Body job: Job): Response<Job>

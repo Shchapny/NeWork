@@ -10,36 +10,25 @@ import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Long.convertLongToString(): String {
-    val date = this
-    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return dateFormat.format(date)
-}
-
-fun String.convertStringToLong(): Long? {
-    val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).parse(this)
-    return date?.time
-}
-
-fun String.dateFormatEntity(): String {
+fun String.dateFormat(): String {
     val oldFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)
     val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     return newFormat.format(oldFormat as Date)
 }
 
-fun String.sendEventDate(): String {
+fun String.sendDate(): String {
     val oldFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).parse(this)
     val newFormat = SimpleDateFormat("YYYY-MM-dd", Locale.getDefault())
     return newFormat.format(oldFormat as Date)
 }
 
-fun String.sendEventTime(): String {
+fun String.sendTime(): String {
     val oldFormat = SimpleDateFormat("hh:mm", Locale.getDefault()).parse(this)
     val newFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
     return newFormat.format(oldFormat as Date)
 }
 
-fun String.timeFormatEntity() = substring(0, 5)
+fun String.timeFormat() = substring(0, 5)
 
 fun selectDateDialog(editText: EditText?, fragment: Fragment) {
     val calendar = Calendar.getInstance()

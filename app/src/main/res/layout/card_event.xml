@@ -20,7 +20,8 @@
             android:src="@drawable/ic_avatar"
             app:layout_constraintBottom_toTopOf="@id/barrier_top"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/image_avatar" />
 
         <TextView
             android:id="@+id/author"
@@ -57,7 +58,8 @@
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/menu" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_top"
@@ -122,7 +124,8 @@
             app:layout_constraintStart_toStartOf="@+id/content"
             app:layout_constraintTop_toBottomOf="@+id/content"
             tools:src="@drawable/android"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:contentDescription="@string/image_content" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_bottom"

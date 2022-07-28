@@ -10,17 +10,30 @@ import ru.netology.diplom.data.entity.JobEntity
 @Dao
 interface JobDao {
 
-    @Query("SELECT * FROM JobEntity ORDER BY start DESC")
-    fun get(): Flow<List<JobEntity>>
+    @Query("SELECT * FROM JobEntity WHERE userId = :userId ORDER BY start DESC")
+    fun getByUserId(userId: Long): Flow<List<JobEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(job: JobEntity)
+    suspend fun insertJob(job: JobEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(jobs: List<JobEntity>)
+    suspend fun insertJobs(jobs: List<JobEntity>)
 
-    @Query("UPDATE JobEntity SET position = :position WHERE id = :id")
-    suspend fun updatePositionById(id: Long, position: String)
+    @Query(
+        """
+        UPDATE JobEntity SET 
+        name = :name, position = :position, start = :start, finish = :finish, link = :link
+        WHERE id = :jobId
+        """
+    )
+    suspend fun updatePositionById(
+        jobId: Long,
+        name: String,
+        position: String,
+        start: String,
+        finish: String?,
+        link: String?
+    )
 
     @Query("DELETE FROM JobEntity WHERE id = :id")
     suspend fun removeById(id: Long)
@@ -29,5 +42,10 @@ interface JobDao {
     suspend fun removeAll()
 
     suspend fun saveJob(job: JobEntity) =
-        if (job.id == 0L) insert(job) else updatePositionById(job.id, job.position)
+        if (job.id == 0L) {
+            insertJob(job)
+        } else {
+            updatePositionById(job.id, job.name, job.position, job.start, job.finish, job.link)
+            0L
+        }
 }

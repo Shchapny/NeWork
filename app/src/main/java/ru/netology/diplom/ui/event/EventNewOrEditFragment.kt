@@ -67,10 +67,10 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                                     getString(R.string.error_link)
                                 else -> {
                                     viewModel.changeContent(
-                                        description,
-                                        "${eventDate.sendEventDate()}T${eventTime.sendEventTime()}Z",
-                                        resources.getResourceEntryName(binding.type.checkedRadioButtonId),
-                                        link
+                                        content = description,
+                                        datetime = "${eventDate.sendDate()}T${eventTime.sendTime()}Z",
+                                        type = resources.getResourceEntryName(binding.type.checkedRadioButtonId),
+                                        link = link
                                     )
                                     viewModel.save()
                                     hideKeyboard(requireView())
@@ -86,8 +86,8 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
 
         navArgs.eventArgs?.let { event ->
             binding.apply {
-                eventDate.setText(event.datetime.substringBefore("T").dateFormatEntity())
-                eventTime.setText(event.datetime.substringAfter("T").timeFormatEntity())
+                eventDate.setText(event.datetime.substringBefore("T").dateFormat())
+                eventTime.setText(event.datetime.substringAfter("T").timeFormat())
                 eventDesc.setText(event.content)
                 eventLink.setText(event.link)
                 resources.getIdentifier(event.type.name.lowercase(), "id", context?.packageName)

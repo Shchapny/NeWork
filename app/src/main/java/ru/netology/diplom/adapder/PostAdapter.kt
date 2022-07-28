@@ -12,7 +12,7 @@ import ru.netology.diplom.data.dto.entity.Post
 import ru.netology.diplom.databinding.CardPostBinding
 import ru.netology.diplom.enumeration.AttachmentType
 import ru.netology.diplom.util.count
-import ru.netology.diplom.util.dateFormatEntity
+import ru.netology.diplom.util.dateFormat
 import ru.netology.diplom.util.loadImage
 
 interface PostActionListener {
@@ -48,7 +48,7 @@ class PostViewHolder(
             avatar.loadImage(post.authorAvatar.toString(), "avatars")
             author.text = post.author
             content.text = post.content
-            published.text = post.published.dateFormatEntity()
+            published.text = post.published.dateFormat()
 
             likes.text = count(post.likeOwnerIds.size.toLong())
             likes.isChecked = post.likedByMe

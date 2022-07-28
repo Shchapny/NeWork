@@ -64,7 +64,7 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
                         eventViewModel.dislikeById(event.id)
                     }
                 } else {
-                    findNavController().navigate(R.id.action_eventFeedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
 
@@ -92,7 +92,7 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
                         eventViewModel.refuseById(event.id)
                     }
                 } else {
-                    findNavController().navigate(R.id.action_eventFeedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
         })
@@ -128,7 +128,7 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
                 if (authViewModel.authenticated) {
                     findNavController().navigate(R.id.action_eventFeedFragment_to_eventNewOrEditFragment)
                 } else {
-                    findNavController().navigate(R.id.action_eventFeedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
         }

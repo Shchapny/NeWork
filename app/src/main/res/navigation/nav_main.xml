@@ -9,28 +9,17 @@
         android:id="@+id/authenticationFragment"
         android:name="ru.netology.diplom.ui.auth.AuthenticationFragment"
         android:label="@string/authentication"
-        tools:layout="@layout/fragment_authentication" >
-        <action
-            android:id="@+id/action_authenticationFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_authentication" />
     <fragment
         android:id="@+id/registrationFragment"
         android:name="ru.netology.diplom.ui.auth.RegistrationFragment"
         android:label="@string/registration"
-        tools:layout="@layout/fragment_registration" >
-        <action
-            android:id="@+id/action_registrationFragment_to_postFeedFragment"
-            app:destination="@id/postFeedFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/postFeedFragment"
         android:name="ru.netology.diplom.ui.post.PostFeedFragment"
         android:label="@string/posts"
         tools:layout="@layout/fragment_post_feed" >
-        <action
-            android:id="@+id/action_postFeedFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
         <action
             android:id="@+id/action_postFeedFragment_to_postNewOrEditFragment"
             app:destination="@id/postNewOrEditFragment" />
@@ -55,9 +44,6 @@
         android:label="@string/jobs"
         tools:layout="@layout/fragment_job_feed" >
         <action
-            android:id="@+id/action_jobFeedFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
-        <action
             android:id="@+id/action_jobFeedFragment_to_jobNewOrEditFragment"
             app:destination="@id/jobNewOrEditFragment" />
     </fragment>
@@ -80,9 +66,6 @@
         <action
             android:id="@+id/action_eventFeedFragment_to_eventNewOrEditFragment"
             app:destination="@id/eventNewOrEditFragment" />
-        <action
-            android:id="@+id/action_eventFeedFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
         <action
             android:id="@+id/action_eventFeedFragment_to_showImageFragment"
             app:destination="@id/showImageFragment" />

@@ -49,7 +49,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 state.authState -> {
                     viewModel.reset()
                     hideKeyboard(requireView())
-                    findNavController().navigate(R.id.action_registrationFragment_to_postFeedFragment)
+                    findNavController().navigate(R.id.postFeedFragment)
                 }
             }
         }

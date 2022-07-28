@@ -26,14 +26,21 @@ interface EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEvents(events: List<EventEntity>)
 
-    @Query("UPDATE EventEntity SET content = :content, datetime = :datetime, link = :link WHERE id = :eventId")
+    @Query(
+        """
+        UPDATE EventEntity SET
+        content = :content, datetime = :datetime, link = :link
+        WHERE id = :eventId 
+        """
+    )
     suspend fun updateEventById(eventId: Long, content: String, datetime: String, link: String)
 
     @Query(
         """
         UPDATE EventEntity SET
         likeOwnerIds  = likeOwnerIds + CASE WHEN likedByMe THEN -1 ELSE 1 END, 
-        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END WHERE id =:id;
+        likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
+        WHERE id =:id;
         """
     )
     suspend fun likeByMe(id: Long)
@@ -41,8 +48,9 @@ interface EventDao {
     @Query(
         """
         UPDATE EventEntity SET
-         participantsIds = participantsIds + CASE WHEN participatedByMe THEN -1 ELSE 1 END,
-        participatedByMe = CASE WHEN participatedByMe THEN 0 ELSE 1 END WHERE id =:id; 
+        participantsIds = participantsIds + CASE WHEN participatedByMe THEN -1 ELSE 1 END,
+        participatedByMe = CASE WHEN participatedByMe THEN 0 ELSE 1 END
+        WHERE id =:id; 
         """
     )
     suspend fun participateByMe(id: Long)

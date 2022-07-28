@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,13 +15,15 @@ import ru.netology.diplom.adapder.JobAdapter
 import ru.netology.diplom.data.dto.entity.Job
 import ru.netology.diplom.databinding.FragmentJobFeedBinding
 import ru.netology.diplom.viewmodel.JobViewModel
+import ru.netology.diplom.viewmodel.auth.AuthViewModel
 
 @AndroidEntryPoint
 class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
 
     private var _binding: FragmentJobFeedBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModels<JobViewModel>()
+    private val authViewModel by activityViewModels<AuthViewModel>()
+    private val jobViewModel by activityViewModels<JobViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,43 +40,50 @@ class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
         val adapter = JobAdapter(object : JobActionListener {
 
             override fun onEdit(job: Job) {
+                jobViewModel.edit(job)
                 val action =
                     JobFeedFragmentDirections.actionJobFeedFragmentToJobNewOrEditFragment(job)
                 findNavController().navigate(action)
-                viewModel.edit(job)
             }
 
             override fun onRemove(job: Job) {
-                viewModel.removeById(job.id)
+                jobViewModel.removeById(job.id)
             }
         })
         binding.container.adapter = adapter
 
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refresh()
-        }
-
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
-            binding.apply {
-                swipeRefresh.isRefreshing = state.loading
-                swipeRefresh.isRefreshing = state.refreshing
-                progress.isVisible = state.loading
-                if (state.error) {
-                    Snackbar.make(root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.retry_loading) { viewModel.refresh() }
-                        .show()
-                }
+        jobViewModel.data.observe(viewLifecycleOwner) { jobs ->
+            adapter.submitList(jobs.list)
+            if (jobs.empty) {
+                binding.infoText.visibility = View.VISIBLE
+                binding.infoText.text = getString(R.string.empty_entity, "Jobs")
+            } else {
+                binding.infoText.visibility = View.GONE
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.data.collect { state ->
-                adapter.submitList(state.entities)
+        authViewModel.dataAuth.observe(viewLifecycleOwner) { auth ->
+            if (auth.id == 0L) {
+                binding.infoText.visibility = View.VISIBLE
+                binding.infoText.setText(R.string.notauthorized)
+            } else {
+                binding.infoText.visibility = View.GONE
+                jobViewModel.loadJobs(auth.id)
+            }
+        }
+
+        jobViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.jobNewOrEditFragment)
+            if (authViewModel.authenticated) {
+                findNavController().navigate(R.id.jobNewOrEditFragment)
+            } else {
+                findNavController().navigate(R.id.authenticationFragment)
+            }
         }
     }
 

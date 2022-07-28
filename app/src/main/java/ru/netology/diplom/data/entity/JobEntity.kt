@@ -10,14 +10,15 @@ data class JobEntity(
     val id: Long,
     val name: String,
     val position: String,
-    val start: Long,
-    val finish: Long? = null,
+    val start: String,
+    val finish: String? = null,
     val link: String? = null,
-    val ownedByMe: Boolean = false
+    val ownedByMe: Boolean = false,
+    val userId: Long? = null
 ) {
 
     companion object {
-        fun fromDto(dto: Job): JobEntity = with(dto) {
+        fun fromDto(dto: Job, userId: Long): JobEntity = with(dto) {
             JobEntity(
                 id = id,
                 name = name,
@@ -25,7 +26,8 @@ data class JobEntity(
                 start = start,
                 finish = finish,
                 link = link,
-                ownedByMe = ownedByMe
+                ownedByMe = ownedByMe,
+                userId = userId
             )
         }
     }
@@ -43,4 +45,4 @@ data class JobEntity(
     }
 }
 
-fun List<Job>.toJobEntity(): List<JobEntity> = map(JobEntity::fromDto)
+fun List<Job>.toJobEntity(userId: Long): List<JobEntity> = map {JobEntity.fromDto(it, userId)}

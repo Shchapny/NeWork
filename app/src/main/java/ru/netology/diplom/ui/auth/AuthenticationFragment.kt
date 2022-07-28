@@ -48,7 +48,7 @@ class AuthenticationFragment : Fragment(R.layout.fragment_authentication) {
             }
 
             btSignup.setOnClickListener {
-                findNavController().navigate(R.id.action_authenticationFragment_to_registrationFragment)
+                findNavController().navigate(R.id.registrationFragment)
             }
         }
 

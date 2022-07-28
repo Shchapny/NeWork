@@ -12,10 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.diplom.R
 import ru.netology.diplom.databinding.FragmentJobNewOrEditBinding
-import ru.netology.diplom.util.convertLongToString
-import ru.netology.diplom.util.convertStringToLong
-import ru.netology.diplom.util.hideKeyboard
-import ru.netology.diplom.util.selectDateDialog
+import ru.netology.diplom.util.*
 import ru.netology.diplom.viewmodel.JobViewModel
 
 @AndroidEntryPoint
@@ -56,7 +53,7 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
                             val finishDate = if (binding.finishDate.text.isNullOrBlank()) {
                                 null
                             } else {
-                                binding.finishDate.text.toString().convertStringToLong()
+                                binding.finishDate.text.toString()
                             }
                             val link = if (binding.link.text.isNullOrBlank()) {
                                 null
@@ -72,15 +69,14 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
                                     getString(R.string.error_position)
                                 else -> {
                                     viewModel.change(
-                                        company,
-                                        position,
-                                        startDate.convertStringToLong() ?: 0L,
-                                        finishDate,
-                                        link
+                                        company = company,
+                                        position = position,
+                                        startDate = startDate.sendDate(),
+                                        finishDate = finishDate?.sendDate(),
+                                        link = link
                                     )
                                     viewModel.save()
                                     hideKeyboard(requireView())
-                                    findNavController().navigateUp()
                                 }
                             }
                         }
@@ -95,11 +91,11 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
             binding.apply {
                 company.setText(job.name)
                 position.setText(job.position)
-                startDate.setText(job.start.convertLongToString())
-                if (job.finish == 0L) {
+                startDate.setText(job.start.dateFormat())
+                if (job.finish.isNullOrEmpty()) {
                     finishDate.setText("")
                 } else {
-                    finishDate.setText(job.finish?.convertLongToString())
+                    finishDate.setText(job.finish.dateFormat())
                 }
                 link.setText(job.link)
             }
@@ -110,7 +106,7 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
                 selectDateDialog(startDateLayout.editText, requireParentFragment())
             }
             finishDate.setOnClickListener {
-                selectDateDialog(finishDateLayout.editText,  requireParentFragment())
+                selectDateDialog(finishDateLayout.editText, requireParentFragment())
             }
         }
 

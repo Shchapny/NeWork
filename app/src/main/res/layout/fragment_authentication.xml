@@ -66,6 +66,7 @@
 
             <Button
                 android:id="@+id/bt_signin"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -77,6 +78,7 @@
 
             <Button
                 android:id="@+id/bt_signup"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -84,7 +86,7 @@
                 android:backgroundTint="@color/teal_200"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

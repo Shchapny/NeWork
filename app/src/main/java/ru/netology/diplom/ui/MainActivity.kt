@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                             .setMessage(R.string.refine_signout)
                             .setPositiveButton(R.string.sign_out) { _, _ ->
                                 appAuth.removeAuth()
-                                return@setPositiveButton
+                                findNavController(R.id.nav_host_fragment_container).navigate(R.id.postFeedFragment)
                             }
                             .setNegativeButton(R.string.cancel) { _, _ ->
                                 return@setNegativeButton

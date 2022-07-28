@@ -1,11 +1,8 @@
 package ru.netology.diplom.repository.job
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import ru.netology.diplom.api.JobApiService
-import ru.netology.diplom.authorization.AppAuth
 import ru.netology.diplom.data.dao.JobDao
 import ru.netology.diplom.data.dto.entity.Job
 import ru.netology.diplom.data.entity.JobEntity
@@ -17,24 +14,21 @@ import java.sql.SQLException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class JobRepositoryImpl @Inject constructor(
     private val jobApiService: JobApiService,
-    private val jobDao: JobDao,
-    appAuth: AppAuth
+    private val jobDao: JobDao
 ) : JobRepository {
 
-    override val data: Flow<List<Job>> = appAuth.authStateFlow
-        .flatMapLatest {
-            jobDao.get().map { jobs ->
-                jobs.map(JobEntity::toDto)
-            }
+    override fun data(userId: Long): Flow<List<Job>> {
+        return jobDao.getByUserId(userId).map { jobs ->
+            jobs.map { job -> job.toDto() }
         }
+    }
 
-    override suspend fun save(job: Job) {
+    override suspend fun save(job: Job, userId: Long): Long {
         try {
-            jobDao.saveJob(JobEntity.fromDto(job))
+            val jobId = jobDao.saveJob(JobEntity.fromDto(job, userId))
 
             val response = jobApiService.save(job)
             if (!response.isSuccessful) {
@@ -42,7 +36,9 @@ class JobRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            jobDao.insert(JobEntity.fromDto(body))
+            jobDao.insertJob(JobEntity.fromDto(body, userId))
+
+            return jobId
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
@@ -56,15 +52,16 @@ class JobRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAll() {
+    override suspend fun getByUserId(id: Long) {
         try {
-            val response = jobApiService.getAll()
+            jobDao.removeAll()
+            val response = jobApiService.getByUserId(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            jobDao.insert(body.toJobEntity())
+            jobDao.insertJobs(body.toJobEntity(id))
         } catch (e: ApiError) {
             throw e
         } catch (e: SocketTimeoutException) {
