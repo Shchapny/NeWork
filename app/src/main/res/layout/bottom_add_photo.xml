@@ -9,14 +9,13 @@
         android:id="@+id/bottom_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/offset"
-        android:layout_marginEnd="@dimen/offset"
         android:background="@color/teal_200"
         app:layout_constraintBottom_toTopOf="@id/button_panel" />
 
     <LinearLayout
         android:id="@+id/button_panel"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
+        android:background="@color/background_feed"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="@dimen/offset"

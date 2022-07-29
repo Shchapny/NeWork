@@ -17,11 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/offset_entity"
+            android:contentDescription="@string/image_avatar"
             android:src="@drawable/ic_avatar"
             app:layout_constraintBottom_toTopOf="@id/barrier_top"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/image_avatar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/author"
@@ -49,17 +49,17 @@
             tools:text="@sample/entity.json/data/published" />
 
         <ImageButton
-            android:padding="0dp"
             android:id="@+id/menu"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/height_more"
-            android:layout_marginTop="@dimen/offset_entity"
+            android:layout_margin="@dimen/offset_entity"
             android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/menu"
+            android:padding="0dp"
             android:src="@drawable/ic_more"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/menu" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_top"
@@ -93,9 +93,9 @@
             android:id="@+id/event_link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:autoLink="web"
             android:textColorLink="@color/purple_500"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_type"
@@ -119,13 +119,13 @@
             android:id="@+id/image_event"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_image_post"
+            android:contentDescription="@string/image_content"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/content"
             app:layout_constraintStart_toStartOf="@+id/content"
             app:layout_constraintTop_toBottomOf="@+id/content"
             tools:src="@drawable/android"
-            tools:visibility="visible"
-            android:contentDescription="@string/image_content" />
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_bottom"
@@ -138,44 +138,59 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/likes"
             style="@style/LikeButton"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:backgroundTint="@color/background_feed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:text="@sample/entity.json/data/likes" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/share"
-            style="@style/ShareAndParticipantsButton"
-            android:layout_width="@dimen/width_share"
-            android:layout_height="@dimen/height_share"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            app:icon="@drawable/ic_share"
-            app:layout_constraintBottom_toBottomOf="@+id/participants"
-            app:layout_constraintStart_toEndOf="@+id/participants"
-            app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/participants"
-            style="@style/ShareAndParticipantsButton"
-            android:layout_width="wrap_content"
+            style="@style/OtherButton"
+            android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:backgroundTint="@color/background_feed"
             app:icon="@drawable/ic_participants"
+            app:layout_constraintBottom_toBottomOf="@+id/likes"
             app:layout_constraintStart_toEndOf="@+id/likes"
-            app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
+            app:layout_constraintTop_toTopOf="@+id/likes"
             tools:text="@sample/entity.json/data/participants" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/speaker"
+            style="@style/OtherButton"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/background_feed"
+            app:icon="@drawable/ic_participants"
+            app:layout_constraintBottom_toBottomOf="@+id/participants"
+            app:layout_constraintStart_toEndOf="@+id/participants"
+            app:layout_constraintTop_toTopOf="@+id/participants"
+            tools:text="@sample/entity.json/data/speaker" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/share"
+            style="@style/OtherButton"
+            android:layout_width="@dimen/button_width_share"
+            android:layout_height="@dimen/button_height_share"
+            app:backgroundTint="@color/background_feed"
+            app:icon="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="@+id/speaker"
+            app:layout_constraintStart_toEndOf="@+id/speaker"
+            app:layout_constraintTop_toTopOf="@+id/speaker" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/participate"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/teal_200"
+            android:padding="0dp"
             android:text="@string/participate"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/button_text_size"
             app:layout_constraintBottom_toBottomOf="@id/share"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/share" />

@@ -53,7 +53,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/height_more"
-            android:layout_marginTop="@dimen/offset_entity"
+            android:layout_margin="@dimen/offset_entity"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/menu"
             android:padding="0dp"
@@ -99,30 +99,29 @@
             android:id="@+id/barrier_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/offset"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="content, image_post" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/likes"
             style="@style/LikeButton"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/button_width"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:backgroundTint="@color/background_feed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:text="@sample/entity.json/data/likes" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
-            style="@style/ShareAndParticipantsButton"
-            android:layout_width="@dimen/width_share"
-            android:layout_height="@dimen/height_share"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            style="@style/OtherButton"
+            android:layout_width="@dimen/button_width_share"
+            android:layout_height="@dimen/button_height_share"
+            app:backgroundTint="@color/background_feed"
             app:icon="@drawable/ic_share"
             app:layout_constraintBottom_toBottomOf="@+id/likes"
             app:layout_constraintStart_toEndOf="@+id/likes"
-            app:layout_constraintTop_toBottomOf="@id/barrier_bottom" />
+            app:layout_constraintTop_toTopOf="@+id/likes" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
