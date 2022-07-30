@@ -9,6 +9,9 @@ import ru.netology.diplom.data.dto.User
 
 interface AuthApiService {
 
+    @GET("users")
+    suspend fun getAllUsers(): Response<List<User>>
+
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Long): Response<User>
 

@@ -92,4 +92,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/listUsersFragment"
+        android:name="ru.netology.diplom.ui.ListUsersFragment"
+        android:label="@string/select_speaker"
+        tools:layout="@layout/fragment_list_users" />
 </navigation>

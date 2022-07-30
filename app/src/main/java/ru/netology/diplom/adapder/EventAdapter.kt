@@ -71,6 +71,8 @@ class EventViewHolder(
                 }
             }
 
+            speaker.text = count(event.speakerIds.size.toLong())
+
             menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
             menu.setOnClickListener { view ->
                 PopupMenu(view.context, view).apply {

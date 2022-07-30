@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.RadioButton
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -25,13 +26,17 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
 
     private var _binding: FragmentEventNewOrEditBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModels<EventViewModel>()
+    private val eventViewModel by activityViewModels<EventViewModel>()
     private val navArgs by navArgs<EventNewOrEditFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (navArgs.eventArgs != null) {
+            (activity as AppCompatActivity).supportActionBar?.title =
+                context?.getString(R.string.edit_event)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)?.also {
             _binding = FragmentEventNewOrEditBinding.bind(it)
         }
@@ -66,13 +71,13 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                                 link.isBlank() -> binding.eventLinkLayout.error =
                                     getString(R.string.error_link)
                                 else -> {
-                                    viewModel.changeContent(
+                                    eventViewModel.changeContent(
                                         content = description,
                                         datetime = "${eventDate.sendDate()}T${eventTime.sendTime()}Z",
                                         type = resources.getResourceEntryName(binding.type.checkedRadioButtonId),
                                         link = link
                                     )
-                                    viewModel.save()
+                                    eventViewModel.save()
                                     hideKeyboard(requireView())
                                 }
                             }
@@ -110,7 +115,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                     }
                     Activity.RESULT_OK -> {
                         val uri = result.data?.data
-                        viewModel.changePhoto(uri, uri?.toFile())
+                        eventViewModel.changePhoto(uri, uri?.toFile())
                     }
                 }
             }
@@ -123,7 +128,7 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                 loadFromCamera(this@EventNewOrEditFragment, 2048, photoLauncher::launch)
             }
             includePhoto.removePhoto.setOnClickListener {
-                viewModel.changePhoto(null, null)
+                eventViewModel.changePhoto(null, null)
             }
             eventDate.setOnClickListener {
                 selectDateDialog(eventDateLayout.editText, requireParentFragment())
@@ -135,14 +140,21 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                     requireContext()
                 )
             }
+            eventSpeaker.setOnClickListener {
+                findNavController().navigate(R.id.listUsersFragment)
+            }
         }
 
-        viewModel.eventCreated.observe(viewLifecycleOwner) {
+        eventViewModel.listSpeakers.observe(viewLifecycleOwner) { listSpeaker ->
+            binding.eventSpeaker.setText(listSpeaker.values.joinToString(prefix = "", postfix = ""))
+        }
+
+        eventViewModel.eventCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
 
-        viewModel.photo.observe(viewLifecycleOwner) { photo ->
+        eventViewModel.photo.observe(viewLifecycleOwner) { photo ->
             binding.apply {
                 if (photo.uri == null) {
                     includePhoto.photoContainer.visibility = View.GONE

@@ -15,7 +15,7 @@
     <string name="description_select_photo">Select photo</string>
     <string name="description_take_photo">Take photo</string>
     <string name="description_photo">Photo</string>
-    <string name="new_or_edit_post">New or edit post</string>
+    <string name="edit_post">Edit post</string>
     <string name="show_image">Image</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
@@ -78,4 +78,9 @@
     <string name="image_content">Image content</string>
     <string name="select_image_avatar">Select image avatar</string>
     <string name="notauthorized">You are not authorized</string>
+    <string name="edit_job">Edit job</string>
+    <string name="edit_event">Edit event</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_speaker">Select speaker</string>
 </resources>

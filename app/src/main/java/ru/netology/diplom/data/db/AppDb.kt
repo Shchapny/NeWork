@@ -12,6 +12,7 @@ import ru.netology.diplom.data.entity.*
         PostEntity::class,
         EventEntity::class,
         JobEntity::class,
+        UserEntity::class,
         PostRemoteKeyEntity::class,
         EventRemoteKeyEntity::class
     ], version = 1, exportSchema = false
@@ -22,6 +23,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun eventDao(): EventDao
     abstract fun jobDao(): JobDao
+    abstract fun userDao(): UserDao
     abstract fun postRemoteKeyDao(): PostRemoteKeyDao
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao
 }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.diplom.authorization.AppAuth
+import ru.netology.diplom.data.dto.User
 import ru.netology.diplom.data.dto.entity.Event
 import ru.netology.diplom.data.dto.media.MediaUpload
 import ru.netology.diplom.data.entity.embeddable.EventTypeEmbeddable
@@ -57,7 +58,11 @@ class EventViewModel @Inject constructor(
     private val _photo = MutableLiveData(noPhoto)
     val photo: LiveData<PhotoModel> = _photo
 
+    private val _listSpeakers = MutableLiveData(mutableMapOf<Long, String>())
+    val listSpeakers: LiveData<MutableMap<Long, String>> = _listSpeakers
+
     private val edited = MutableLiveData(emptyEvent)
+    private val list = mutableMapOf<Long, String>()
 
     fun save() {
         edited.value?.let { event ->
@@ -74,6 +79,7 @@ class EventViewModel @Inject constructor(
         }
         edited.value = emptyEvent
         _photo.value = noPhoto
+        list.clear()
     }
 
     fun removeById(id: Long) = viewModelScope.launch {
@@ -136,5 +142,17 @@ class EventViewModel @Inject constructor(
 
     fun changePhoto(uri: Uri?, file: File?) {
         _photo.value = PhotoModel(uri, file)
+    }
+
+    fun selectSpeaker(user: User) {
+        edited.value =
+            edited.value?.speakerIds?.plus(user.id)?.let { userId ->
+                edited.value?.copy(speakerIds = userId)
+            }
+
+        if (!list.keys.contains(user.id)) {
+            list[user.id] = user.name
+            _listSpeakers.value = list
+        }
     }
 }

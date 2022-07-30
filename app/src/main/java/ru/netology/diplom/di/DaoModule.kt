@@ -21,6 +21,9 @@ object DaoModule {
     fun provideJobDao(db: AppDb): JobDao = db.jobDao()
 
     @Provides
+    fun provideUserDao(db: AppDb): UserDao = db.userDao()
+
+    @Provides
     fun providePostRemoteKeyDao(db: AppDb): PostRemoteKeyDao = db.postRemoteKeyDao()
 
     @Provides

@@ -2,6 +2,7 @@ package ru.netology.diplom.ui.job
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -27,6 +28,10 @@ class JobNewOrEditFragment : Fragment(R.layout.fragment_job_new_or_edit) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (navArgs.jobArgs != null) {
+            (activity as AppCompatActivity).supportActionBar?.title =
+                context?.getString(R.string.edit_job)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)?.also {
             _binding = FragmentJobNewOrEditBinding.bind(it)
         }

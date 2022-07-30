@@ -1,13 +1,18 @@
 package ru.netology.diplom.repository.auth
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.diplom.api.AuthApiService
+import ru.netology.diplom.data.dao.UserDao
 import ru.netology.diplom.data.dto.Token
 import ru.netology.diplom.data.dto.User
 import ru.netology.diplom.data.dto.media.MediaUpload
+import ru.netology.diplom.data.entity.toDto
+import ru.netology.diplom.data.entity.toUserEntity
 import ru.netology.diplom.error.ApiError
 import ru.netology.diplom.error.NetworkError
 import ru.netology.diplom.error.ServerError
@@ -19,8 +24,29 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val authApiService: AuthApiService
+    private val authApiService: AuthApiService,
+    private val userDao: UserDao
 ) : AuthRepository {
+
+    override val data: Flow<List<User>> = userDao.getAllUsers()
+        .map { users -> users.toDto() }
+
+    override suspend fun getAllUsers() {
+        try {
+            val response = authApiService.getAllUsers()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            userDao.insertUsers(body.toUserEntity())
+        } catch (e: SocketTimeoutException) {
+            throw ServerError
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
 
     override suspend fun getUserById(id: Long): User {
         try {

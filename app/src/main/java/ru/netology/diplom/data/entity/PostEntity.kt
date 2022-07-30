@@ -63,5 +63,3 @@ data class PostEntity(
         )
     }
 }
-
-fun List<Post>.toPostEntity(): List<PostEntity> = map(PostEntity::fromDto)

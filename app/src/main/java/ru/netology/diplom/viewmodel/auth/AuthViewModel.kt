@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import ru.netology.diplom.authorization.AppAuth
 import ru.netology.diplom.data.dto.User
 import ru.netology.diplom.model.state.AuthState
+import ru.netology.diplom.model.state.FeedModelState
 import ru.netology.diplom.repository.auth.AuthRepository
 import javax.inject.Inject
 
@@ -16,11 +17,20 @@ class AuthViewModel @Inject constructor(
     private val appAuth: AppAuth
 ) : ViewModel() {
 
+    val data = repository.data.asLiveData(Dispatchers.Default)
+
     val dataAuth: LiveData<AuthState> = appAuth.authStateFlow.asLiveData(Dispatchers.Default)
     val authenticated: Boolean get() = appAuth.authStateFlow.value.id != 0L
 
+    private val _dataState = MutableLiveData(FeedModelState())
+    val dataState: LiveData<FeedModelState> = _dataState
+
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
+
+    init {
+        loadUsers()
+    }
 
     fun loadUser(id: Long) = viewModelScope.launch {
         if (id == 0L) {
@@ -31,6 +41,14 @@ class AuthViewModel @Inject constructor(
             } catch (e: Exception) {
                 _user.value = null
             }
+        }
+    }
+
+    private fun loadUsers() = viewModelScope.launch {
+        try {
+            repository.getAllUsers()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
         }
     }
 }

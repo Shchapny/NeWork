@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -33,6 +34,10 @@ class PostNewOrEditFragment : Fragment(R.layout.fragment_post_new_or_edit) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (navArgs.postArgs != null) {
+            (activity as AppCompatActivity).supportActionBar?.title =
+                context?.getString(R.string.edit_post)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)?.also {
             _binding = FragmentPostNewOrEditBinding.bind(it)
         }
