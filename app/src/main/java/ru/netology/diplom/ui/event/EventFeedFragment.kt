@@ -122,16 +122,7 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
 
         authViewModel.dataAuth.observe(viewLifecycleOwner) { adapter.refresh() }
 
-        binding.apply {
-            swipeRefresh.setOnRefreshListener { adapter.refresh() }
-            fab.setOnClickListener {
-                if (authViewModel.authenticated) {
-                    findNavController().navigate(R.id.action_eventFeedFragment_to_eventNewOrEditFragment)
-                } else {
-                    findNavController().navigate(R.id.authenticationFragment)
-                }
-            }
-        }
+        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
     }
 
     override fun onDestroyView() {

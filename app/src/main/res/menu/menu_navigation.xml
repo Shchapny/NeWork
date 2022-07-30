@@ -11,6 +11,10 @@
         android:title="@string/events" />
 
     <item
+        android:id="@+id/placeholder"
+        android:title="" />
+
+    <item
         android:id="@+id/jobFeedFragment"
         android:icon="@drawable/jobs_icon_selector"
         android:title="@string/job" />

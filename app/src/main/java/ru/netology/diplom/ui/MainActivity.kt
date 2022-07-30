@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var appAuth: AppAuth
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<AuthViewModel>()
+    private val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity() {
                 menuInflater.inflate(R.menu.menu_auth, menu)
 
                 menu.let {
-                    it.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
-                    it.setGroupVisible(R.id.authenticated, viewModel.authenticated)
+                    it.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
+                    it.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
                 }
             }
 
@@ -80,16 +81,22 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val bottomNavigation = binding.navigation
-        bottomNavigation.itemIconTintList = null
+        val bottomNavigation = binding.navigation.apply {
+            itemIconTintList = null
+            background = null
+            menu.getItem(2).isEnabled = false
+        }
+
+        val bottomGroup = binding.groupBottomAppBar
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.postFeedFragment, R.id.eventFeedFragment, R.id.jobFeedFragment -> bottomNavigation.visibility =
+                R.id.postFeedFragment, R.id.eventFeedFragment, R.id.jobFeedFragment -> bottomGroup.visibility =
                     View.VISIBLE
-                else -> bottomNavigation.visibility = View.GONE
+                else -> bottomGroup.visibility = View.GONE
             }
         }
         val appBar = AppBarConfiguration(
@@ -101,12 +108,26 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBar)
         bottomNavigation.setupWithNavController(navController)
 
-        viewModel.dataAuth.observe(this) {
-            invalidateOptionsMenu()
-            viewModel.loadUser(it?.id ?: 0L)
+        binding.fab.setOnClickListener {
+            bottomNavigation.menu.apply {
+                if (!authViewModel.authenticated) {
+                    findNavController(R.id.nav_host_fragment_container).navigate(R.id.authenticationFragment)
+                } else {
+                    when {
+                        getItem(0).isChecked -> fabButtonNavigation(R.id.postNewOrEditFragment)
+                        getItem(1).isChecked -> fabButtonNavigation(R.id.eventNewOrEditFragment)
+                        getItem(3).isChecked -> fabButtonNavigation(R.id.jobNewOrEditFragment)
+                    }
+                }
+            }
         }
 
-        viewModel.user.observe(this) { user ->
+        authViewModel.dataAuth.observe(this) {
+            invalidateOptionsMenu()
+            authViewModel.loadUser(it?.id ?: 0L)
+        }
+
+        authViewModel.user.observe(this) { user ->
             if (user?.avatar?.isNotBlank() == true) {
                 Glide.with(this@MainActivity)
                     .asBitmap()
@@ -131,5 +152,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_container)
         return navController.navigateUp()
+    }
+
+    private fun fabButtonNavigation(@IdRes id: Int) {
+        findNavController(R.id.nav_host_fragment_container).navigate(id)
     }
 }

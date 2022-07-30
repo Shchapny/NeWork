@@ -77,14 +77,6 @@ class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
-
-        binding.fab.setOnClickListener {
-            if (authViewModel.authenticated) {
-                findNavController().navigate(R.id.jobNewOrEditFragment)
-            } else {
-                findNavController().navigate(R.id.authenticationFragment)
-            }
-        }
     }
 
     override fun onDestroyView() {

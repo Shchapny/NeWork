@@ -108,16 +108,7 @@ class PostFeedFragment : Fragment(R.layout.fragment_post_feed) {
 
         authViewModel.dataAuth.observe(viewLifecycleOwner) { adapter.refresh() }
 
-        binding.apply {
-            swipeRefresh.setOnRefreshListener { adapter.refresh() }
-            fab.setOnClickListener {
-                if (authViewModel.authenticated) {
-                    findNavController().navigate(R.id.action_postFeedFragment_to_postNewOrEditFragment)
-                } else {
-                    findNavController().navigate(R.id.authenticationFragment)
-                }
-            }
-        }
+        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
     }
 
     override fun onDestroyView() {
