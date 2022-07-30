@@ -56,7 +56,7 @@ class JobFeedFragment : Fragment(R.layout.fragment_job_feed) {
             adapter.submitList(jobs.list)
             if (jobs.empty) {
                 binding.infoText.visibility = View.VISIBLE
-                binding.infoText.text = getString(R.string.empty_entity, "Jobs")
+                binding.infoText.text = getString(R.string.empty_job)
             } else {
                 binding.infoText.visibility = View.GONE
             }

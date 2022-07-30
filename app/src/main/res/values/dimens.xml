@@ -2,7 +2,7 @@
 <resources>
     <dimen name="offset">16dp</dimen>
     <dimen name="offset_entity">4dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin">20dp</dimen>
     <dimen name="offset_photo">8dp</dimen>
     <dimen name="height_image_post">240dp</dimen>
     <dimen name="avatar_radius">48dp</dimen>
@@ -16,4 +16,5 @@
     <dimen name="button_width">70dp</dimen>
     <dimen name="button_padding">8dp</dimen>
     <dimen name="offset_users">8dp</dimen>
+    <dimen name="fab_radius">20dp</dimen>
 </resources>

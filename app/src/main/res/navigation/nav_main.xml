@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/eventNewOrEditFragment"
         android:name="ru.netology.diplom.ui.event.EventNewOrEditFragment"
-        android:label="@string/title_new_entity"
+        android:label="@string/title_new_event"
         tools:layout="@layout/fragment_event_new_or_edit" >
         <argument
             android:name="eventArgs"
@@ -84,7 +84,7 @@
     <fragment
         android:id="@+id/showImageFragment"
         android:name="ru.netology.diplom.ui.attachment.ShowImageFragment"
-        android:label="@string/image"
+        android:label="@string/show_image"
         tools:layout="@layout/fragment_show_image" >
         <argument
             android:name="showImage"

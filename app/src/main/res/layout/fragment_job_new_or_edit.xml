@@ -21,7 +21,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/start"
+            android:hint="@string/start_date"
             app:errorEnabled="true"
             app:startIconDrawable="@drawable/ic_calendar">
 
@@ -38,7 +38,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/finish"
+            android:hint="@string/finish_date"
             app:errorEnabled="true"
             app:startIconDrawable="@drawable/ic_calendar">
 

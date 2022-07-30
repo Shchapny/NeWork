@@ -17,7 +17,7 @@
     <item
         android:id="@+id/jobFeedFragment"
         android:icon="@drawable/jobs_icon_selector"
-        android:title="@string/job" />
+        android:title="@string/jobs" />
 
     <item
         android:id="@+id/user"

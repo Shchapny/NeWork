@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/description_select_photo"
+            android:contentDescription="@string/gallery"
             android:padding="@dimen/offset_photo"
             android:src="@drawable/ic_gallery" />
 
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/description_take_photo"
+            android:contentDescription="@string/camera"
             android:padding="@dimen/offset_photo"
             android:src="@drawable/ic_camera" />
 
