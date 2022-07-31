@@ -141,7 +141,8 @@ class EventNewOrEditFragment : Fragment(R.layout.fragment_event_new_or_edit) {
                 )
             }
             eventSpeaker.setOnClickListener {
-                findNavController().navigate(R.id.listUsersFragment)
+                val bundle = Bundle().apply { putString("showUsers", "selectSpeakers") }
+                findNavController().navigate(R.id.listUsersFragment, bundle)
             }
         }
 

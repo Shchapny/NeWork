@@ -95,6 +95,27 @@ class EventFeedFragment : Fragment(R.layout.fragment_event_feed) {
                     findNavController().navigate(R.id.authenticationFragment)
                 }
             }
+
+            override fun onShowListParticipants(event: Event) {
+                if (event.participantsIds.isNotEmpty()) {
+                    val bundle = Bundle().apply { putString("showUsers", "participants") }
+                    authViewModel.getUsersIds(event.participantsIds)
+                    findNavController().navigate(R.id.listUsersFragment, bundle)
+                } else {
+                    Snackbar.make(binding.root, R.string.no_participants, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onShowListSpeakers(event: Event) {
+                if (event.speakerIds.isNotEmpty()) {
+                    val bundle = Bundle().apply { putString("showUsers", "speakers") }
+                    authViewModel.getUsersIds(event.speakerIds)
+                    findNavController().navigate(R.id.listUsersFragment, bundle)
+                } else {
+                    Snackbar.make(binding.root, R.string.no_speakers, Snackbar.LENGTH_SHORT).show()
+                }
+            }
         })
         binding.container.adapter = adapter
 

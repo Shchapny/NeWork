@@ -28,6 +28,9 @@ class AuthViewModel @Inject constructor(
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
 
+    private val _userIds = MutableLiveData<Set<Long>>()
+    val userIds: LiveData<Set<Long>> = _userIds
+
     init {
         loadUsers()
     }
@@ -50,5 +53,9 @@ class AuthViewModel @Inject constructor(
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
         }
+    }
+
+    fun getUsersIds(ids: Set<Long>) = viewModelScope.launch {
+        _userIds.value = ids
     }
 }

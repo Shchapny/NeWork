@@ -75,4 +75,8 @@
     <string name="edit_job">Редактировать работу</string>
     <string name="edit_event">Редактировать событие</string>
     <string name="select_speaker">Выберите спикера</string>
+    <string name="no_participants">Ещё никто не согласился на участие</string>
+    <string name="no_speakers">Без спикеров</string>
+    <string name="list_participants">Список участников</string>
+    <string name="list_speakers">Список спикеров</string>
 </resources>

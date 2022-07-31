@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -30,6 +32,11 @@ class ListUsersFragment : Fragment(R.layout.fragment_list_users) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        when (arguments?.getString("showUsers")) {
+            "participants" -> titleListUsersFragment(R.string.list_participants)
+            "speakers" -> titleListUsersFragment(R.string.list_speakers)
+            "selectSpeakers" -> titleListUsersFragment(R.string.select_speaker)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)?.also {
             _binding = FragmentListUsersBinding.bind(it)
         }
@@ -40,8 +47,12 @@ class ListUsersFragment : Fragment(R.layout.fragment_list_users) {
 
         val adapter = UserAdapter(object : UserActionListener {
             override fun selectUser(user: User) {
-                eventViewModel.selectSpeaker(user)
-                findNavController().navigateUp()
+                when (arguments?.getString("showUsers")) {
+                    "selectSpeakers" -> {
+                        eventViewModel.selectSpeaker(user)
+                        findNavController().navigateUp()
+                    }
+                }
             }
         })
         binding.apply {
@@ -55,7 +66,12 @@ class ListUsersFragment : Fragment(R.layout.fragment_list_users) {
         }
 
         authViewModel.data.observe(viewLifecycleOwner) { users ->
-            adapter.submitList(users)
+            when(arguments?.getString("showUsers")) {
+                "selectSpeakers" -> adapter.submitList(users)
+                else -> adapter.submitList(users.filter { user ->
+                    authViewModel.userIds.value?.contains(user.id) == true
+                })
+            }
         }
 
         authViewModel.dataState.observe(viewLifecycleOwner) { state ->
@@ -68,5 +84,9 @@ class ListUsersFragment : Fragment(R.layout.fragment_list_users) {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun titleListUsersFragment(@StringRes id: Int) {
+        (activity as AppCompatActivity).supportActionBar?.title = context?.getString(id)
     }
 }

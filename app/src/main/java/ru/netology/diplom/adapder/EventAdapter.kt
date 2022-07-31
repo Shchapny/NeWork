@@ -23,6 +23,8 @@ interface EventActionListener {
     fun onShare(event: Event)
     fun onAttachImage(event: Event)
     fun onParticipate(event: Event)
+    fun onShowListParticipants(event: Event)
+    fun onShowListSpeakers(event: Event)
 }
 
 class EventAdapter(private val listener: EventActionListener) :
@@ -98,6 +100,8 @@ class EventViewHolder(
             share.setOnClickListener { listener.onShare(event) }
             participate.setOnClickListener { listener.onParticipate(event) }
             imageEvent.setOnClickListener { listener.onAttachImage(event) }
+            participants.setOnClickListener { listener.onShowListParticipants(event) }
+            speaker.setOnClickListener { listener.onShowListSpeakers(event) }
 
             if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) {
                 imageEvent.visibility = View.VISIBLE

@@ -75,4 +75,8 @@
     <string name="edit_job">Edit job</string>
     <string name="edit_event">Edit event</string>
     <string name="select_speaker">Select speaker</string>
+    <string name="no_participants">No one has agreed to participate yet</string>
+    <string name="no_speakers">Without speakers</string>
+    <string name="list_participants">List participants</string>
+    <string name="list_speakers">List speakers</string>
 </resources>
