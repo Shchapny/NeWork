@@ -23,7 +23,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/event_date_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/event_date"
@@ -40,7 +40,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/event_time_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/event_time"
@@ -57,7 +57,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/event_speaker_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/select_speaker"
@@ -74,7 +74,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/event_desc_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/description"
@@ -90,7 +90,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/event_link_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/link"

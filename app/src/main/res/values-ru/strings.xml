@@ -47,7 +47,7 @@
     <string name="work_experience">Опыт работы: с %1$s по %2$s</string>
     <string name="work_experience_now">Опыт работы: с %1$s на текущий момент</string>
     <string name="title_new_event">Новое событие</string>
-    <string name="event_date">День события</string>
+    <string name="event_date">Дата события</string>
     <string name="description">Описание</string>
     <string name="offline">Оффлайн</string>
     <string name="event_time">Время события</string>

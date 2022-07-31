@@ -28,7 +28,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/user_name_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/name"
@@ -43,7 +43,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login"
@@ -58,7 +58,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
@@ -75,7 +75,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_conf_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_conf"
@@ -90,15 +90,17 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_signup"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_margin="@dimen/offset"
         android:backgroundTint="@color/teal_200"
+        android:padding="0dp"
         android:text="@string/sign_up"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/button_text_size" />
 
 </LinearLayout>
